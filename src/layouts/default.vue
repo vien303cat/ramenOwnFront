@@ -55,6 +55,7 @@ const dialogType = ref('')
 const openDialog = (type) => {
   dialogType.value = type
   dialog.value = true
+  console.log('dialogType:', dialogType.value)
 }
 
 // 設定標題
