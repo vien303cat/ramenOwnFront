@@ -14,10 +14,12 @@
     "axios": "^1.7.9",
     "pinia-plugin-persistedstate": "^4.2.0",
     "roboto-fontface": "*",
+    "sweetalert2": "^11.15.10",
     "validator": "^13.12.0",
     "vee-validate": "^4.15.0",
     "vue": "^3.4.31",
     "vuetify": "^3.6.14",
+    "vuetify-use-dialog": "^0.6.11",
     "yup": "^1.6.1"
   },
   "devDependencies": {

@@ -3,7 +3,7 @@
     <v-container class="d-flex align-center">
       <!-- 左側 LOGO -->
       <v-btn to="/" class="mr-5" :active="false">
-        <v-img src="../../public/ramen白_2276860.png" class="ma-1" min-width="40"></v-img>
+        <v-img src="/ramen白_2276860.png" class="ma-1" min-width="40"></v-img>
         <span class="text-orange font-weight-bold text-h4">拉麵王</span>
       </v-btn>
 
@@ -31,8 +31,8 @@
     <v-card>
       <v-card-title class="text-h5">{{ dialogTitle }}</v-card-title>
       <v-card-text>
-        <LoginForm v-if="dialogType === '登入'" />
-        <RegisterForm v-if="dialogType === '註冊'" />
+        <LoginForm v-if="dialogType === '登入'" @login-success="handleLoginSuccess" />
+        <RegisterForm v-if="dialogType === '註冊'" @register-success="handleRegisterSuccess" />
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -46,6 +46,13 @@
 import { ref, computed } from 'vue'
 import LoginForm from '@/components/LoginForm.vue'
 import RegisterForm from '@/components/RegisterForm.vue'
+import { useRouter } from 'vue-router'
+import { useAxios } from '@/composables/axios'
+import { useUserStore } from '@/stores/user'
+
+const router = useRouter()
+const { api } = useAxios()
+const user = useUserStore()
 
 // 控制 Dialog 開關 & 類型
 const dialog = ref(false)
@@ -69,6 +76,29 @@ const navs = computed(() => [
 ])
 
 const midNavs = computed(() => [{ title: '關於我們', to: '/about', icon: 'mdi-account-circle' }])
+
+// 處理註冊成功
+const handleRegisterSuccess = async (values) => {
+  try {
+    // 自動登入
+    const result = await api.post('/user/login', {
+      account: values.account,
+      password: values.password,
+    })
+    user.login(result) // 登入成功後將資料存入 Vuex
+    // 註冊成功後關閉對話框並重定向到首頁
+    dialog.value = false
+    router.push('/')
+  } catch (error) {
+    console.error('自動登入失敗:', error)
+  }
+}
+
+// 處理登入成功
+const handleLoginSuccess = () => {
+  dialog.value = false
+  router.push('/')
+}
 </script>
 
 <style>

@@ -8,10 +8,17 @@
 import vuetify from './vuetify'
 import pinia from '@/stores'
 import router from '@/router'
+import VuetifyUseDialog from 'vuetify-use-dialog'
 
-export function registerPlugins (app) {
+export function registerPlugins(app) {
   app
     .use(vuetify)
+    .use(VuetifyUseDialog, {
+      snackbar: {
+        showCloseButton: false,
+        snackbarPoprs: { time: 2000 },
+      },
+    })
     .use(router)
     .use(pinia)
 }
