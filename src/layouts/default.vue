@@ -77,6 +77,8 @@ const navs = computed(() => [
 
 const midNavs = computed(() => [{ title: '關於我們', to: '/about', icon: 'mdi-account-circle' }])
 
+
+// 兩個的取消事件應該可以寫一起 利用dialogType
 // 處理註冊成功
 const handleRegisterSuccess = async (values) => {
   try {
@@ -93,12 +95,13 @@ const handleRegisterSuccess = async (values) => {
     console.error('自動登入失敗:', error)
   }
 }
-
 // 處理登入成功
 const handleLoginSuccess = () => {
+  console.log('dialogType:', dialogType.value)
   dialog.value = false
   router.push('/')
 }
+
 </script>
 
 <style>

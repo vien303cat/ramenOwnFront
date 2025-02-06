@@ -54,6 +54,8 @@ const schema = yup.object({
     .max(20, '密碼至多 20 個字'),
 })
 
+// 定義 emit 事件
+const emit = defineEmits(['login-success'])
 // 建立表單
 const { handleSubmit, isSubmitting } = useForm({
   validationSchema: schema,
@@ -78,6 +80,8 @@ const submit = handleSubmit(async (values) => {
         timeout: 2000,
       },
     })
+    // 發出成功事件
+    emit('login-success', values)
   } catch (error) {
     console.error(error)
     createSnackbar({

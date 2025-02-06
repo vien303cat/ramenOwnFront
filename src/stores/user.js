@@ -22,10 +22,19 @@ export const useUserStore = defineStore(
     })
 
     const login = async (data) => {
-      token.value = data.token
+      if(data.token){
+        token.value = data.token
+      }
       account.value = data.account
       permission.value = data.permission
       name.value = data.name
+    }
+
+    const logout = () => {
+      token.value = ''
+      account.value = ''
+      permission.value = UserPermission.USER
+      name.value = ''
     }
 
     return {
@@ -36,6 +45,7 @@ export const useUserStore = defineStore(
       isLoggedIn,
       isAdmin,
       login,
+      logout,
     }
   },
   {
