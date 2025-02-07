@@ -20,14 +20,15 @@ router.beforeEach(async (to, from, next) => {
   const { apiAuth } = useAxios()
   const user = useUserStore()
 
-  if(from === START_LOCATION && user.isLoggedIn){
+  console.log(user)
+  if (from === START_LOCATION && user.isLoggedIn) {
     try {
       const { data } = await apiAuth.get('/user/profile')
-      console.log("user.login")
+      console.log('ramen-user.login')
       user.login(data.result)
-    }catch(error){
+    } catch (error) {
       console.log(error)
-      console.log("user.logout")
+      console.log('ramen-user.logout')
       user.logout()
     }
   }

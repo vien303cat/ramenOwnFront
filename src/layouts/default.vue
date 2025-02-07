@@ -31,8 +31,8 @@
     <v-card>
       <v-card-title class="text-h5">{{ dialogTitle }}</v-card-title>
       <v-card-text>
-        <LoginForm v-if="dialogType === '登入'" @login-success="handleLoginSuccess" />
-        <RegisterForm v-if="dialogType === '註冊'" @register-success="handleRegisterSuccess" />
+        <LoginForm v-if="dialogType === '登入'" @login-success="handleSuccess" />
+        <RegisterForm v-if="dialogType === '註冊'" @register-success="handleSuccess" />
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -62,7 +62,6 @@ const dialogType = ref('')
 const openDialog = (type) => {
   dialogType.value = type
   dialog.value = true
-  console.log('dialogType:', dialogType.value)
 }
 
 // 設定標題
@@ -71,37 +70,43 @@ const dialogWidth = computed(() => (dialogType.value === '登入' ? '400' : '800
 
 // 導覽列項目
 const navs = computed(() => [
-  { title: '註冊', icon: 'mdi-account-plus' },
-  { title: '登入', icon: 'mdi-login-variant' },
+  { title: '註冊', icon: 'mdi-account-plus', show: !user.isLoggedIn },
+  { title: '登入', icon: 'mdi-login-variant', show: !user.isLoggedIn },
 ])
 
-const midNavs = computed(() => [{ title: '關於我們', to: '/about', icon: 'mdi-account-circle' }])
-
+const midNavs = computed(() => [
+  { title: '個人專區', to: '/userRoom', icon: 'mdi-account-circle' },
+  { title: '管理後台', to: '/admin', icon: 'mdi-account-star' },
+  { title: '關於作者', to: '/about', icon: 'mdi-noodles' },
+])
 
 // 兩個的取消事件應該可以寫一起 利用dialogType
 // 處理註冊成功
-const handleRegisterSuccess = async (values) => {
-  try {
-    // 自動登入
-    const result = await api.post('/user/login', {
-      account: values.account,
-      password: values.password,
-    })
-    user.login(result) // 登入成功後將資料存入 Vuex
-    // 註冊成功後關閉對話框並重定向到首頁
+const handleSuccess = async (values) => {
+  if (dialogType.value === '註冊') {
+    try {
+      // 自動登入
+      const result = await api.post('/user/login', {
+        account: values.account,
+        password: values.password,
+      })
+      user.login(result) // 登入成功後將資料存入 Vuex
+      // 註冊成功後關閉對話框並重定向到首頁
+      dialog.value = false
+      router.push('/')
+    } catch (error) {
+      console.error('自動登入失敗:', error)
+    }
+  } else {
     dialog.value = false
     router.push('/')
-  } catch (error) {
-    console.error('自動登入失敗:', error)
   }
 }
 // 處理登入成功
 const handleLoginSuccess = () => {
-  console.log('dialogType:', dialogType.value)
   dialog.value = false
   router.push('/')
 }
-
 </script>
 
 <style>

@@ -12,6 +12,7 @@ export const useUserStore = defineStore(
     const name = ref('')
 
     const isLoggedIn = computed(() => {
+      console.log('token get:' + token.value.length)
       return token.value.length > 0
     })
 
@@ -22,7 +23,8 @@ export const useUserStore = defineStore(
     })
 
     const login = async (data) => {
-      if(data.token){
+      console.log('login data:', data)
+      if (data.token) {
         token.value = data.token
       }
       account.value = data.account
@@ -31,6 +33,7 @@ export const useUserStore = defineStore(
     }
 
     const logout = () => {
+      console.log('logout')
       token.value = ''
       account.value = ''
       permission.value = UserPermission.USER
@@ -49,7 +52,7 @@ export const useUserStore = defineStore(
     }
   },
   {
-    psersist: {
+    persist: {
       key: 'ramen-user',
       pick: ['token'],
     },
