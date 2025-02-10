@@ -8,21 +8,28 @@
       </v-btn>
 
       <!-- 中間靠左操作選單 -->
-      <v-btn v-for="nav of midNavs" :key="nav.to" :to="nav.to" :prepend-icon="nav.icon">{{
-        nav.title
-      }}</v-btn>
-
+      <template v-for="nav of midNavs" :key="nav.to">
+        <v-btn v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon">{{ nav.title }}</v-btn>
+      </template>
       <v-spacer></v-spacer>
 
       <!-- 右側操作選單 (開啟 v-dialog) -->
-      <v-btn
-        v-for="nav of navs"
-        :key="nav.title"
-        :prepend-icon="nav.icon"
-        @click="openDialog(nav.title)"
-      >
-        {{ nav.title }}
-      </v-btn>
+      <template v-for="nav of navs" :key="nav.title">
+        <v-btn v-if="nav.show" :prepend-icon="nav.icon" @click="openDialog(nav.title)">
+          {{ nav.title }}
+        </v-btn>
+      </template>
+
+      <!-- 右側操作選單 (顯示用戶名稱和登出按鈕) -->
+      <template v-if="user.isLoggedIn">
+        <v-card class="pa-2 mr-3" outlined>
+          <div>您好! {{ user.name }}</div>
+          <div>等級1: 初心者</div>
+        </v-card>
+        <v-btn append-icon="mdi-logout-variant" @click="logout">登出</v-btn>
+      </template>
+
+      <!-- <v-btn v-if="user.isLoggedIn" append-icon="mdi-logout-variant" @click="logout"> 登出 </v-btn> -->
     </v-container>
   </v-app-bar>
 
@@ -40,6 +47,8 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <v-main> <RouterView></RouterView> </v-main>
 </template>
 
 <script setup>
@@ -49,10 +58,12 @@ import RegisterForm from '@/components/RegisterForm.vue'
 import { useRouter } from 'vue-router'
 import { useAxios } from '@/composables/axios'
 import { useUserStore } from '@/stores/user'
+import Swal from 'sweetalert2'
 
 const router = useRouter()
 const { api } = useAxios()
 const user = useUserStore()
+const { apiAuth } = useAxios()
 
 // 控制 Dialog 開關 & 類型
 const dialog = ref(false)
@@ -72,12 +83,29 @@ const dialogWidth = computed(() => (dialogType.value === '登入' ? '400' : '800
 const navs = computed(() => [
   { title: '註冊', icon: 'mdi-account-plus', show: !user.isLoggedIn },
   { title: '登入', icon: 'mdi-login-variant', show: !user.isLoggedIn },
+  // { to: '/logout', title: '登出', icon: 'mdi-logout-variant', show: user.isLoggedIn },
 ])
 
+const logout = async () => {
+  try {
+    await apiAuth.delete('/user/logout')
+    user.logout() // 清除用戶狀態
+    Swal.fire({
+      icon: 'success',
+      title: '已登出',
+      showConfirmButton: false,
+      timer: 2000,
+    })
+    router.push('/')
+  } catch (error) {
+    console.error('登出失敗:', error)
+  }
+}
+
 const midNavs = computed(() => [
-  { title: '個人專區', to: '/userRoom', icon: 'mdi-account-circle' },
-  { title: '管理後台', to: '/admin', icon: 'mdi-account-star' },
-  { title: '關於作者', to: '/about', icon: 'mdi-noodles' },
+  { title: '個人專區', to: '/userRoom', icon: 'mdi-account-circle', show: user.isLoggedIn },
+  { title: '管理後台', to: '/admin', icon: 'mdi-account-star', show: user.isAdmin },
+  { title: '關於作者', to: '/about', icon: 'mdi-noodles', show: true },
 ])
 
 // 兩個的取消事件應該可以寫一起 利用dialogType
@@ -86,11 +114,12 @@ const handleSuccess = async (values) => {
   if (dialogType.value === '註冊') {
     try {
       // 自動登入
-      const result = await api.post('/user/login', {
+      const { data } = await api.post('/user/login', {
         account: values.account,
         password: values.password,
       })
-      user.login(result) // 登入成功後將資料存入 Vuex
+
+      user.login(data.result) // 登入成功後將資料存入 Vuex
       // 註冊成功後關閉對話框並重定向到首頁
       dialog.value = false
       router.push('/')
@@ -102,15 +131,12 @@ const handleSuccess = async (values) => {
     router.push('/')
   }
 }
-// 處理登入成功
-const handleLoginSuccess = () => {
-  dialog.value = false
-  router.push('/')
-}
 </script>
 
 <style>
-.text-orange {
-  color: #ff9800;
+/* 取消網頁邊邊的滾動條 */
+html,
+body {
+  overflow-x: hidden;
 }
 </style>

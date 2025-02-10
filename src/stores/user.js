@@ -12,7 +12,7 @@ export const useUserStore = defineStore(
     const name = ref('')
 
     const isLoggedIn = computed(() => {
-      console.log('token get:' + token.value.length)
+      console.log('isLoggedIn:', token.value.length > 0)
       return token.value.length > 0
     })
 
