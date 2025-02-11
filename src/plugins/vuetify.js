@@ -18,11 +18,11 @@ const myCustomDarkTheme = {
     primary: '#E94444',
     secondary: '#F44336',
     accent: '#FEC165',
-    warning: '#FFC107',
+    warning: '#E94444',
     grey: '#999999',
-    info: '#333333',
-    success: '#333333',
-    error: '#333333',
+    info: '#FFC107',
+    success: '#FFC107',
+    error: '#F44336',
   },
 }
 
