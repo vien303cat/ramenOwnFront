@@ -22,6 +22,7 @@
 
       <!-- 右側操作選單 (顯示用戶名稱和登出按鈕) -->
       <template v-if="user.isLoggedIn">
+        <SvgAvatar :svg-content="svg" />
         <v-card class="pa-2 mr-3" outlined>
           <div>您好! {{ user.name }}</div>
           <div>等級1: 初心者</div>
@@ -59,11 +60,17 @@ import { useRouter } from 'vue-router'
 import { useAxios } from '@/composables/axios'
 import { useUserStore } from '@/stores/user'
 import Swal from 'sweetalert2'
+import avatar from 'animal-avatar-generator'
+import SvgAvatar from '@/components/SvgAvatar.vue'
 
 const router = useRouter()
 const { api } = useAxios()
 const user = useUserStore()
 const { apiAuth } = useAxios()
+
+// avatar
+const svg = computed(() => avatar(user.account, { size: 40, blackout: true }))
+console.log('svg:', user.account)
 
 // 控制 Dialog 開關 & 類型
 const dialog = ref(false)
