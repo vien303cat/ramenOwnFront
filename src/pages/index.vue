@@ -1,5 +1,5 @@
 <template>
-  <v-container class="h-100 pa-0 ma-0">
+  <v-container class="h-100">
     <!-- <v-overlay
       v-model="overlay"
       absolute
