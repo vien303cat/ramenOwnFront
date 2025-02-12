@@ -32,7 +32,19 @@ router.beforeEach(async (to, from, next) => {
       user.logout()
     }
   }
-  next()
+
+  // 以防有人利用網址直接進入後台/個人資訊頁面
+  if (to.meta.login && !user.isLoggedIn) {
+    next('/')
+  } else if (to.meta.admin && !user.isAdmin) {
+    next('/')
+  } else {
+    next()
+  }
+})
+
+router.afterEach((to, from) => {
+  document.title = to.meta.title || '拉麵王'
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

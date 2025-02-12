@@ -15,5 +15,5 @@ meta:
   layout: default # 使用 src/layouts/default.vue 作為版面配置
   login: false
   admin: false
-  title: '拉麵王-關於作者'
+  title: '拉麵王|關於作者'
 </route>

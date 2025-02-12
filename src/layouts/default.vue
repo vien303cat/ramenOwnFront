@@ -111,7 +111,7 @@ const logout = async () => {
 
 const midNavs = computed(() => [
   { title: '個人專區', to: '/userRoom', icon: 'mdi-account-circle', show: user.isLoggedIn },
-  { title: '管理後台', to: '/admin', icon: 'mdi-account-star', show: user.isAdmin },
+  { title: '管理後台', to: '/admin/stores', icon: 'mdi-account-star', show: user.isAdmin },
   { title: '關於作者', to: '/about', icon: 'mdi-noodles', show: true },
 ])
 
@@ -147,3 +147,10 @@ body {
   overflow-x: hidden;
 }
 </style>
+
+<route lang="yaml">
+meta:
+  login: false
+  admin: false
+  title: '拉麵王-首頁'
+</route>
