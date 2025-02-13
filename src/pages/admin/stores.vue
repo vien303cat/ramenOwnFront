@@ -1,5 +1,5 @@
 <template>
-  <v-container class="h-100  " fill-height fluid>
+  <v-container class="h-100" fill-height fluid>
     <v-row class="h-100" align="center">
       <v-col cols="12">
         <h1 class="text-center">麵屋管理</h1>
@@ -11,6 +11,8 @@
           :items="stores"
           :search="search"
           :filter-keys="['name', 'adress']"
+          :items-per-page="10"
+          :footer-props="footerProps"
         >
           <template #top>
             <v-toolbar>
@@ -50,16 +52,18 @@
             {{ new Date(value).toLocaleString() }}
           </template>
           <template #[`item.edit`]="{ item }">
-            <v-btn icon="mdi-pencil" variant @click="openDailog(item)"></v-btn>
+            <v-btn icon="mdi-pencil" @click="openDailog(item)"></v-btn>
           </template>
         </v-data-table>
       </v-col>
     </v-row>
   </v-container>
   <v-dialog v-model="dialog.open" persistent max-width="600px" max-height="80vh">
-    <v-form :disabled="isSubmitting" @submit.prevent="submit()">
+    <v-form :disabled="isSubmitting" @submit.prevent="submit">
       <v-card>
-        <v-card-title><h2>{{ dialog.id ? '編輯麵屋' : '新增麵屋' }}</h2></v-card-title>
+        <v-card-title
+          ><h2>{{ dialog.id ? '編輯麵屋' : '新增麵屋' }}</h2></v-card-title
+        >
         <v-card-text>
           <v-text-field
             v-model="name.value.value"
@@ -96,6 +100,8 @@
             help-text="請上傳店家圖片"
             :error-text="{ type: '檔案格式不符', size: '圖片容量過大' }"
           ></VueFileAgent>
+
+          <pre>{{ errors }}</pre>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="closeDialog">取消</v-btn>
@@ -124,14 +130,22 @@ const headers = computed(() => {
     { title: '圖片', key: 'image', sortable: false },
     { title: '麵屋名稱', key: 'name', sortable: true },
     { title: '描述', key: 'depiction', sortable: false },
-    { title: '上架中', key: 'ishidden', sortable: false },
+    { title: '上架中', key: 'ishidden', sortable: true },
     { title: '地址', key: 'adress', sortable: false },
     { title: '營業時間', key: 'timetxt', sortable: false },
     { title: '新增時間', key: 'createdAt', sortable: true },
     { title: '更新時間', key: 'updatedAt', sortable: true },
-    { title: '編輯', key: 'edit', sortable: false},
+    { title: '編輯', key: 'edit', sortable: false },
   ]
 })
+
+const footerProps = {
+  itemsPerPageText: '每頁顯示',
+  itemsPerPageAllText: '全部',
+  pageText: '{0}-{1} 共 {2} 筆',
+  nextPage: '下一頁',
+  prevPage: '上一頁',
+}
 
 const getStores = async () => {
   try {
@@ -172,7 +186,6 @@ const closeDialog = () => {
   dialog.value.id = ''
   dialog.value.open = false
   fileAgent.value.deleteFileRecord()
-
 }
 
 const schema = yup.object({
@@ -180,7 +193,6 @@ const schema = yup.object({
   depiction: yup.string().required('請輸入描述'),
   timetxt: yup.string().required('請輸入營業時間'),
   adress: yup.string().required('請輸入地址'),
-  image: yup.string().required('請提供店家圖片'),
   ishidden: yup.boolean().required('請選擇是否上架'),
 })
 
@@ -189,7 +201,7 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({
   validationSchema: schema,
 })
 const name = useField('name')
-const depiction = useField('description')
+const depiction = useField('depiction')
 const timetxt = useField('timetxt')
 const adress = useField('adress')
 const ishidden = useField('ishidden')
@@ -200,10 +212,9 @@ const fileRecords = ref([])
 const rawFileRecords = ref([])
 
 const submit = handleSubmit(async (values) => {
-  console.log("enterSubmit:"+values)
-  if((fileRecords.value.length === 0 && dialog.value.id == '') || fileRecords.value[0]?.error) {
+  if ((fileRecords.value.length === 0 && dialog.value.id == '') || fileRecords.value[0]?.error) {
     createSnackbar({
-      text: "店家圖片不可為空或是格式錯誤",
+      text: '店家圖片不可為空或是格式錯誤',
       snackbarProps: {
         color: 'red',
         timeout: 2000,
@@ -229,6 +240,7 @@ const submit = handleSubmit(async (values) => {
       await apiAuth.post('/store', formData)
     }
 
+    //陣列全清空再重新抓一次全部資料 (若是資料量大建議抓id來更新或是直接提交內容來更新)
     stores.splice(0, stores.length)
     getStores()
 
@@ -243,7 +255,7 @@ const submit = handleSubmit(async (values) => {
   } catch (error) {
     console.error(error)
     createSnackbar({
-      text: "新增/編輯麵屋失敗 ",
+      text: '新增/編輯麵屋失敗 ',
       snackbarProps: {
         color: 'red',
         timeout: 2000,

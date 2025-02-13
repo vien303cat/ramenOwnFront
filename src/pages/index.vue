@@ -1,51 +1,70 @@
 <template>
   <v-container class="h-100">
-    <!-- <v-overlay
-      v-model="overlay"
-      absolute
-      :style="{ zIndex: 10 }"
-      class="d-flex align-center justify-center fill-height"
-    >
-      <v-responsive class="fill-height" style="width: 100%; height: 100%">
-        <iframe
-          class="fill-height"
-          :src="youtubeUrl"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          @click.stop="closeOverlay"
-        ></iframe>
-      </v-responsive>
-    </v-overlay> -->
-    <v-row class="h-100" align="center">
+    <IndexOverlay />
+    <v-row>
       <v-col cols="12">
-        <h1 class="text-center">首頁</h1>
+        <v-text-field
+          v-model="search"
+          width="30%"
+          class="mt-5"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+        ></v-text-field>
+      </v-col>
+      <v-col v-for="store of pageStores" :key="store._id" cols="12" md="4" lg="3">
+        <store-card v-bind="store"></store-card>
+      </v-col>
+      <v-col cols="12">
+        <v-pagination v-model="currentPage" :length="totalPage"></v-pagination>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script setup>
-// import { ref } from 'vue'
-// const overlay = ref(true)
-// const youtubeUrl = ref('https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1')
+import IndexOverlay from '@/components/IndexOverlay.vue'
+import StoreCard from '@/components/StoreCard.vue'
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAxios } from '@/composables/axios'
+import { useUserStore } from '@/stores/user'
 
-// const closeOverlay = () => {
-//   overlay.value = false
-// }
-</script>
+const router = useRouter()
+const user = useUserStore()
+const { apiAuth } = useAxios()
+const search = ref('')
 
-<style>
-/* .fill-height {
-  height: 100% !important;
-  width: 100% !important;
+const stores = ref([])
+const getStores = async () => {
+  try {
+    const { data } = await apiAuth.get('/store')
+    stores.value.push(...data.result)
+  } catch (error) {
+    console.error('取得店家列表失敗:', error)
+  }
 }
+getStores()
 
-.v-overlay__content {
-  width: 80% !important;
-  height: 80% !important;
-} */
-</style>
+const ITEMS_PER_PAGE = 4
+const currentPage = ref(1)
+const totalPage = computed(() => {
+  return Math.ceil(filteredProducts.value.length / ITEMS_PER_PAGE)
+})
+const filteredProducts = computed(() => {
+  return stores.value.filter((store) =>
+    store.name.toLowerCase().includes(search.value.toLowerCase()),
+  )
+})
+const pageStores = computed(() => {
+  // 如果一頁2筆資料
+  // 第 一 頁 = 0 ~ 1
+  // 第 二 頁 = 2 ~ 3
+  // 第 三 頁 = 4 ~ 5
+  const start = (currentPage.value - 1) * ITEMS_PER_PAGE
+  const end = currentPage.value * ITEMS_PER_PAGE
+  return filteredProducts.value.slice(start, end)
+})
+</script>
 
 <route lang="yaml">
 meta:

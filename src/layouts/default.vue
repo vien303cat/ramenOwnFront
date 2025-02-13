@@ -70,7 +70,6 @@ const { apiAuth } = useAxios()
 
 // avatar
 const svg = computed(() => avatar(user.account, { size: 40, blackout: true }))
-console.log('svg:', user.account)
 
 // 控制 Dialog 開關 & 類型
 const dialog = ref(false)

@@ -20,7 +20,6 @@ router.beforeEach(async (to, from, next) => {
   const { apiAuth } = useAxios()
   const user = useUserStore()
 
-  console.log(user)
   if (from === START_LOCATION && user.isLoggedIn) {
     try {
       const { data } = await apiAuth.get('/user/profile')
@@ -42,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
     next()
   }
 })
-
+// eslint-disable-next-line no-unused-vars
 router.afterEach((to, from) => {
   document.title = to.meta.title || '拉麵王'
 })
