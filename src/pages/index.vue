@@ -1,6 +1,6 @@
 <template>
   <v-container class="h-100">
-    <IndexOverlay />
+    <!-- <IndexOverlay /> -->
     <v-row>
       <v-col cols="12">
         <v-text-field
@@ -24,7 +24,7 @@
 <script setup>
 import IndexOverlay from '@/components/IndexOverlay.vue'
 import StoreCard from '@/components/StoreCard.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAxios } from '@/composables/axios'
 import { useUserStore } from '@/stores/user'
@@ -63,6 +63,13 @@ const pageStores = computed(() => {
   const start = (currentPage.value - 1) * ITEMS_PER_PAGE
   const end = currentPage.value * ITEMS_PER_PAGE
   return filteredProducts.value.slice(start, end)
+})
+
+// 監聽 totalPage 的變化，並在變化時將 currentPage 設置為 1
+watch(totalPage, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    currentPage.value = 1
+  }
 })
 </script>
 

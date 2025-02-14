@@ -17,9 +17,6 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useUserStore } from '@/stores/user'
-
-const user = useUserStore()
 
 const navs = computed(() => {
   return [
