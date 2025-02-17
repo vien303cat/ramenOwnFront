@@ -29,21 +29,21 @@
         <h3>{{ store.adress }}</h3>
         <br />
         <v-btn
-          v-if="user.isLoggedIn && !scroeDone"
+          v-if="user.isLoggedIn && dialog.id"
+          color="info"
+          variant="flat"
+          append-icon="mdi-noodles"
+          @click="openDailog(myScore)"
+          ><h3>已吃</h3>
+        </v-btn>
+
+        <v-btn
+          v-else-if="user.isLoggedIn "
           color="secondary"
           variant="flat"
           append-icon="mdi-noodles"
           @click="openDailog(null)"
           ><h3>吃</h3>
-        </v-btn>
-
-        <v-btn
-          v-else-if="user.isLoggedIn && scroeDone"
-          color="info"
-          variant="flat"
-          append-icon="mdi-noodles"
-          @click="openDailog(item)"
-          ><h3>已吃</h3>
         </v-btn>
       </v-col>
     </v-row>
@@ -113,7 +113,7 @@
 
 <script setup>
 import { useAxios } from '@/composables/axios'
-import { reactive, computed, ref } from 'vue'
+import { reactive, computed, ref, toRaw } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -146,13 +146,13 @@ const getStore = async () => {
 }
 getStore()
 
-const scores = ref([])
+const scores = reactive([])
 const getScores = async () => {
   try {
     const { data } = await apiAuth.get('/score/getstore/' + route.params.id)
     scores.value.push(...data.result)
   } catch (error) {
-    console.error('取得麵屋列表失敗:' + error)
+    console.error('取得麵屋評價列表失敗:' + error)
     createSnackbar({
       text: error?.response?.data?.message || '未知錯誤',
       snackbarProps: {
@@ -163,38 +163,49 @@ const getScores = async () => {
   }
 }
 getScores()
-console.log('scores:', scores.value)
+console.log('scores:', scores)
 
-const myScore = ref({})
+const myScore = ref(
+  {
+    _id: '',
+    user: '',
+    store: '',
+    star: '',
+    depiction: '',
+  }
+)
 const getScorebyUser = async () => {
   try {
     const { data } = await apiAuth.get(`score/getuser/${route.params.id}/${user.id}`)
     // console.log(data)
     myScore.value = data.result
+    dialog.value.id = myScore.value._id
   } catch (error) {
     console.error('取得個人評分失敗:', error)
   }
 }
 getScorebyUser()
-console.log('myScore:', myScore.value)
 
 const dialog = ref({
   open: false,
   id: '',
 })
 const openDailog = (item) => {
-  console.log('open', myScore.value)
+  console.log('open', item.star)
   if (item) {
     dialog.value.id = item._id
-    star.value.value = item.value
+    star.value.value = item.star
     depiction.value.value = item.depiction
   }
   dialog.value.open = true
 }
 const closeDialog = () => {
-  resetForm()
-  dialog.value.id = ''
-  store.value.star = ''
+  console.log('close', myScore.value._id)
+  if( !myScore.value._id){
+    resetForm()
+    dialog.value.id = ''
+    store.value.star = ''
+  }
   dialog.value.open = false
   fileAgent.value.deleteFileRecord()
 }
