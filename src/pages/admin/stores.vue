@@ -154,10 +154,10 @@ const getStores = async () => {
   } catch (error) {
     console.error('取得麵屋列表失敗:' + error)
     createSnackbar({
-      text: error?.response?.data?.message || '未知錯誤',
+      text: error?.response?.data?.message || '取得麵屋列表失敗',
       snackbarProps: {
         color: 'red',
-        timeout: 1000,
+        timeout: 2000,
       },
     })
   }

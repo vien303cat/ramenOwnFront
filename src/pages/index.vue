@@ -3,12 +3,14 @@
     <!-- <IndexOverlay /> -->
     <v-row>
       <v-col cols="12">
+        <h1>拉麵店家列表</h1>
         <v-text-field
           v-model="search"
           width="30%"
           class="mt-5"
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
+          placeholder="麵屋名稱搜尋"
         ></v-text-field>
       </v-col>
       <v-col v-for="store of pageStores" :key="store._id" cols="12" md="4" lg="3">

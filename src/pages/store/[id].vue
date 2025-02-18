@@ -5,46 +5,82 @@
         <h1>幻想一下有swiper</h1>
       </v-col>
 
-      <v-col cols="12" md="4" class="d-flex justify-center">
-        <v-img :src="store.image" height="300" width="300"></v-img>
+      <v-col cols="12" md="4">
+        <v-col cols="12" justify="center" align="center"
+          ><v-img :src="store.image" height="300" width="300"></v-img
+        ></v-col>
+        <v-col cols="12" class="text-center">
+          <h1>{{ store.name }}</h1>
+          <!-- TODO: -->
+          <h3>評價數:</h3>
+          <h3>
+            綜合評價:
+            <v-rating readonly length="1" size="18" model-value="1" active-color="info" />
+          </h3>
+          <h3>{{ store.timetxt }}</h3>
+          <pre>{{ store.depiction }}</pre>
+          <h3>{{ store.adress }}</h3>
+          <br />
+          <v-btn
+            v-if="user.isLoggedIn && dialog.id"
+            color="info"
+            variant="flat"
+            append-icon="mdi-noodles"
+            @click="openDailog(myScore)"
+            ><h3>已吃</h3>
+          </v-btn>
+
+          <v-btn
+            v-else-if="user.isLoggedIn"
+            color="secondary"
+            variant="flat"
+            append-icon="mdi-noodles"
+            @click="openDailog(null)"
+            ><h3>吃</h3>
+          </v-btn>
+        </v-col>
       </v-col>
       <v-col cols="12" md="8">
         <h2 class="text-center">麵友評論</h2>
         <!-- 合併的麵友評論欄位 -->
-        <div>
-          <p>評論1...</p>
-          <p>評論2...</p>
-          <!-- 你可以在這裡添加更多評論 -->
-        </div>
-      </v-col>
-      <v-col cols="12" md="4" class="text-center">
-        <h1>{{ store.name }}</h1>
-        <h3>評價數:</h3>
-        <h3>
-          綜合評價:
-          <v-rating readonly length="1" size="18" model-value="1" active-color="info" />
-        </h3>
-        <h3>{{ store.timetxt }}</h3>
-        <pre>{{ store.depiction }}</pre>
-        <h3>{{ store.adress }}</h3>
-        <br />
-        <v-btn
-          v-if="user.isLoggedIn && dialog.id"
-          color="info"
-          variant="flat"
-          append-icon="mdi-noodles"
-          @click="openDailog(myScore)"
-          ><h3>已吃</h3>
-        </v-btn>
-
-        <v-btn
-          v-else-if="user.isLoggedIn "
-          color="secondary"
-          variant="flat"
-          append-icon="mdi-noodles"
-          @click="openDailog(null)"
-          ><h3>吃</h3>
-        </v-btn>
+        <v-divider></v-divider>
+        <v-col col="12">
+          <v-data-table
+            :headers="headers"
+            :items="scores"
+            :search="search"
+            :filter-keys="['name']"
+            :items-per-page="3"
+            :footer-props="footerProps"
+          >
+            <template #top>
+              <v-toolbar>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search"
+                  class="mt-5"
+                  prepend-inner-icon="mdi-magnify"
+                  variant="outlined"
+                ></v-text-field>
+              </v-toolbar>
+            </template>
+            <template #[`item.image`]="{ value }">
+              <v-img :src="value" height="150" width="200"></v-img>
+            </template>
+            <template #[`item.user.name`]="{ value }">
+              {{ value }}
+            </template>
+            <template #[`item.star`]="{ value }">
+              {{ value }}
+            </template>
+            <template #[`item.depiction`]="{ value }">
+              {{ value }}
+            </template>
+            <template #[`item.updatedAt`]="{ value }">
+              {{ new Date(value).toLocaleString() }}
+            </template>
+          </v-data-table>
+        </v-col>
       </v-col>
     </v-row>
   </v-container>
@@ -113,7 +149,7 @@
 
 <script setup>
 import { useAxios } from '@/composables/axios'
-import { reactive, computed, ref, toRaw } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -126,6 +162,8 @@ const router = useRouter()
 const route = useRoute()
 const { apiAuth } = useAxios()
 
+// const scores = reactive([])
+const scores = ref([])
 const store = ref({
   _id: '',
   name: '',
@@ -135,6 +173,23 @@ const store = ref({
   depiction: '',
   star: '', // 確保這裡有 star 屬性
 })
+
+const headers = computed(() => {
+  return [
+    { title: '照片', key: 'image', sortable: false, width: '150' },
+    { title: '會員', key: 'user.name', sortable: true, width: '100' },
+    { title: '評分', key: 'star', sortable: true, width: '100' },
+    { title: '描述', key: 'depiction', sortable: false, width: '250' },
+    { title: '評論時間', key: 'updatedAt', sortable: true, width: '150' },
+  ]
+})
+
+const footerProps = {
+  itemsPerPageText: '每頁顯示',
+  pageText: '{0}-{1} 共 {2} 筆',
+  nextPage: '下一頁',
+  prevPage: '上一頁',
+}
 
 const getStore = async () => {
   try {
@@ -146,34 +201,32 @@ const getStore = async () => {
 }
 getStore()
 
-const scores = reactive([])
 const getScores = async () => {
   try {
     const { data } = await apiAuth.get('/score/getstore/' + route.params.id)
-    scores.value.push(...data.result)
+    console.log('getScores:', data.result)
+    // scores.value.push(...data.result)
+    scores.value = data.result
   } catch (error) {
     console.error('取得麵屋評價列表失敗:' + error)
     createSnackbar({
-      text: error?.response?.data?.message || '未知錯誤',
+      text: error?.response?.data?.message || '取得麵屋評價列表失敗',
       snackbarProps: {
         color: 'red',
-        timeout: 1000,
+        timeout: 2000,
       },
     })
   }
 }
 getScores()
-console.log('scores:', scores)
 
-const myScore = ref(
-  {
-    _id: '',
-    user: '',
-    store: '',
-    star: '',
-    depiction: '',
-  }
-)
+const myScore = ref({
+  _id: '',
+  user: '',
+  store: '',
+  star: '',
+  depiction: '',
+})
 const getScorebyUser = async () => {
   try {
     const { data } = await apiAuth.get(`score/getuser/${route.params.id}/${user.id}`)
@@ -191,8 +244,8 @@ const dialog = ref({
   id: '',
 })
 const openDailog = (item) => {
-  console.log('open', item.star)
   if (item) {
+    console.log('open', item._id)
     dialog.value.id = item._id
     star.value.value = item.star
     depiction.value.value = item.depiction
@@ -201,7 +254,7 @@ const openDailog = (item) => {
 }
 const closeDialog = () => {
   console.log('close', myScore.value._id)
-  if( !myScore.value._id){
+  if (!myScore.value._id) {
     resetForm()
     dialog.value.id = ''
     store.value.star = ''
@@ -238,7 +291,7 @@ const submit = handleSubmit(async (values) => {
       formData.append('image', fileRecords.value[0].file)
     }
     if (dialog.value.id) {
-      await apiAuth.patch(`/score/` + dialog.value.id, formData)
+      await apiAuth.patch(`/score/` + myScore.value._id, formData)
     } else {
       await apiAuth.post('/score', formData)
     }
