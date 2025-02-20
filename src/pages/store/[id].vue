@@ -63,6 +63,7 @@
                   class="mt-5"
                   prepend-inner-icon="mdi-magnify"
                   variant="outlined"
+                  placeholder="會員名稱搜尋"
                 ></v-text-field>
               </v-toolbar>
             </template>

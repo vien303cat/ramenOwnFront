@@ -8,8 +8,12 @@
       <!-- <v-card-text>{{ depiction }}</v-card-text> -->
       <v-card-subtitle>評價數: {{ scores }} 則</v-card-subtitle>
       <v-card-subtitle>
-        平均分數: {{ avgScore ? Number(avgScore).toFixed(1) : '0' }}
-        <v-rating readonly length="1" size="18" model-value="1" active-color="info" />
+        平均評價:
+        <span v-if="avgScore">
+              {{ Number(avgScore).toFixed(1) }}
+              <v-rating readonly length="1" size="18" model-value="1" active-color="info" />
+            </span>
+            <span v-else> 尚無評價 </span>
       </v-card-subtitle>
     </router-link>
   </v-card>
