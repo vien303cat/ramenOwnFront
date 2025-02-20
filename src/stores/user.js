@@ -11,6 +11,7 @@ export const useUserStore = defineStore(
     const permission = ref(UserPermission.USER)
     const name = ref('')
     const id = ref('')
+    const scorescnt = ref('')
 
     const isLoggedIn = computed(() => {
       console.log('isLoggedIn:', token.value.length > 0)
@@ -32,6 +33,7 @@ export const useUserStore = defineStore(
       permission.value = data.permission
       name.value = data.name
       id.value = data.id
+      scorescnt.value = data.scorescnt
     }
 
     const logout = () => {
@@ -41,6 +43,7 @@ export const useUserStore = defineStore(
       permission.value = UserPermission.USER
       name.value = ''
       id.value = ''
+      scorescnt.value = ''
     }
 
     return {
@@ -49,6 +52,7 @@ export const useUserStore = defineStore(
       permission,
       name,
       id,
+      scorescnt,
       isLoggedIn,
       isAdmin,
       login,

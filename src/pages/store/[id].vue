@@ -11,16 +11,20 @@
         ></v-col>
         <v-col cols="12" class="text-center">
           <h1>{{ store.name }}</h1>
-          <!-- TODO: -->
-          <h3>評價數:</h3>
+          <h3>評價數: {{ totalScore }} 則</h3>
           <h3>
             綜合評價:
-            <v-rating readonly length="1" size="18" model-value="1" active-color="info" />
+            <span v-if="averageScore.toFixed(1) != 'NaN'">
+              {{ averageScore.toFixed(1) }}
+              <v-rating readonly length="1" size="18" model-value="1" active-color="info" />
+            </span>
+            <span v-else> 尚無評價 </span>
           </h3>
           <h3>{{ store.timetxt }}</h3>
           <pre>{{ store.depiction }}</pre>
           <h3>{{ store.adress }}</h3>
           <br />
+          <!-- TODO: 評論後不會更新在檢查一下 -->
           <v-btn
             v-if="user.isLoggedIn && dialog.id"
             color="info"
@@ -51,7 +55,6 @@
             :search="search"
             :filter-keys="['name']"
             :items-per-page="3"
-            :footer-props="footerProps"
           >
             <template #top>
               <v-toolbar>
@@ -184,13 +187,6 @@ const headers = computed(() => {
   ]
 })
 
-const footerProps = {
-  itemsPerPageText: '每頁顯示',
-  pageText: '{0}-{1} 共 {2} 筆',
-  nextPage: '下一頁',
-  prevPage: '上一頁',
-}
-
 const getStore = async () => {
   try {
     const { data } = await apiAuth.get(`/store/` + route.params.id)
@@ -238,6 +234,15 @@ const getScorebyUser = async () => {
   }
 }
 getScorebyUser()
+
+// 總評論數以及平均分數
+const totalScore = computed(() => {
+  return scores.value.length
+})
+// reduce 會對陣列中的每個元素進行累加
+const averageScore = computed(() => {
+  return scores.value.reduce((iVal, val) => iVal + val.star, 0) / scores.value.length
+})
 
 const dialog = ref({
   open: false,

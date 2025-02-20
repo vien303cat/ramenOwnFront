@@ -8,7 +8,8 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 // Composables
-import { createVuetify } from 'vuetify'
+import { createVuetify } from 'vuetify' // Translations provided by Vuetify
+import { zhHant } from 'vuetify/locale'
 
 const myCustomDarkTheme = {
   dark: true,
@@ -33,5 +34,10 @@ export default createVuetify({
     themes: {
       myCustomDarkTheme,
     },
+  },
+  locale: {
+    locale: 'zhHant',
+    fallback: 'en',
+    messages: { zhHant },
   },
 })

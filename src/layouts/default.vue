@@ -24,6 +24,7 @@
       <template v-if="user.isLoggedIn">
         <SvgAvatar :svg-content="svg" />
         <v-card class="pa-2 mr-3" outlined>
+          <!-- TODO: 寫登入者評論數  -->
           <div>您好! {{ user.name }}</div>
           <div>等級1: 初心者</div>
         </v-card>

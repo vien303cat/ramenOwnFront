@@ -12,7 +12,6 @@
           :search="search"
           :filter-keys="['name', 'adress']"
           :items-per-page="10"
-          :footer-props="footerProps"
         >
           <template #top>
             <v-toolbar>
@@ -138,14 +137,6 @@ const headers = computed(() => {
     { title: '編輯', key: 'edit', sortable: false },
   ]
 })
-
-const footerProps = {
-  itemsPerPageText: '每頁顯示',
-  itemsPerPageAllText: '全部',
-  pageText: '{0}-{1} 共 {2} 筆',
-  nextPage: '下一頁',
-  prevPage: '上一頁',
-}
 
 const getStores = async () => {
   try {

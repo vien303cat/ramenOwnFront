@@ -21,7 +21,7 @@ import { computed } from 'vue'
 const navs = computed(() => {
   return [
     { to: '/admin/stores', text: '麵屋管理', icon: 'mdi-shopping' },
-    { to: '/admin/feedbacks', text: '意見反饋', icon: 'mdi-format-list-bulleted' },
+    { to: '/admin/scores', text: '評價管理', icon: 'mdi-format-list-bulleted' },
     { to: '/', text: '回首頁', icon: 'mdi-home-circle' },
   ]
 })
