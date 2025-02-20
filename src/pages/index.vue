@@ -41,6 +41,7 @@ const getStores = async () => {
   try {
     const { data } = await apiAuth.get('/store')
     stores.value.push(...data.result)
+    console.log(stores.value)
   } catch (error) {
     console.error('取得店家列表失敗:', error)
   }

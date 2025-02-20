@@ -3,8 +3,9 @@
     <v-container class="d-flex align-center">
       <!-- 左側 LOGO -->
       <v-btn to="/" class="mr-5" :active="false">
-        <v-img src="/ramen白_2276860.png" class="ma-1" min-width="40"></v-img>
-        <span class="text-orange font-weight-bold text-h4">拉麵王</span>
+        <v-img src="/拉麵王.png" min-width="150" ></v-img>
+        <!-- <v-img src="/ramen白_2276860.png" class="ma-1" min-width="40"></v-img> -->
+        <!-- <span class="text-orange font-weight-bold text-h4">拉麵王</span> -->
       </v-btn>
 
       <!-- 中間靠左操作選單 -->

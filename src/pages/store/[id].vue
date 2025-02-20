@@ -24,7 +24,6 @@
           <pre>{{ store.depiction }}</pre>
           <h3>{{ store.adress }}</h3>
           <br />
-          <!-- TODO: 評論後不會更新在檢查一下 -->
           <v-btn
             v-if="user.isLoggedIn && dialog.id"
             color="info"
@@ -74,7 +73,9 @@
               {{ value }}
             </template>
             <template #[`item.star`]="{ value }">
-              {{ value }}
+
+              <v-rating v-for="val of value" :key="val" readonly length="1" size="18" model-value="1" active-color="info" />
+
             </template>
             <template #[`item.depiction`]="{ value }">
               {{ value }}
@@ -303,7 +304,7 @@ const submit = handleSubmit(async (values) => {
 
     scores.value.splice(0, scores.value.length)
     getScores()
-
+    getScorebyUser()
     createSnackbar({
       text: dialog.value.id ? '編輯成功' : '新增成功',
       snackbarProps: {

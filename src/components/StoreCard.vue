@@ -6,8 +6,11 @@
       <v-card-subtitle>{{ adress }}</v-card-subtitle>
       <v-card-subtitle>{{ timetxt }}</v-card-subtitle>
       <!-- <v-card-text>{{ depiction }}</v-card-text> -->
-      <v-card-subtitle>評價數</v-card-subtitle>
-      <v-card-subtitle>平均分</v-card-subtitle>
+      <v-card-subtitle>評價數: {{ scores }} 則</v-card-subtitle>
+      <v-card-subtitle>
+        平均分數: {{ avgScore ? Number(avgScore).toFixed(1) : '0' }}
+        <v-rating readonly length="1" size="18" model-value="1" active-color="info" />
+      </v-card-subtitle>
     </router-link>
   </v-card>
 </template>
@@ -38,6 +41,14 @@ defineProps({
   depiction: {
     type: String,
     default: '',
+  },
+  scores: {
+    type: String,
+    default: '',
+  },
+  avgScore: {
+    type: String,
+    default: '0',
   },
 })
 </script>
