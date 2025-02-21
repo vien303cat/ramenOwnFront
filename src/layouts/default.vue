@@ -3,7 +3,7 @@
     <v-container class="d-flex align-center">
       <!-- 左側 LOGO -->
       <v-btn to="/" class="mr-5" :active="false">
-        <v-img src="/拉麵王.png" min-width="150" ></v-img>
+        <v-img src="/拉麵王.png" min-width="150"></v-img>
         <!-- <v-img src="/ramen白_2276860.png" class="ma-1" min-width="40"></v-img> -->
         <!-- <span class="text-orange font-weight-bold text-h4">拉麵王</span> -->
       </v-btn>
@@ -25,14 +25,11 @@
       <template v-if="user.isLoggedIn">
         <SvgAvatar :svg-content="svg" />
         <v-card class="pa-2 mr-3" outlined>
-          <!-- TODO: 寫登入者評論數  -->
           <div>您好! {{ user.name }}</div>
-          <div>等級1: 初心者</div>
+          <div>等級{{ nowLevel }} : {{ UserLevel.LEVEL[nowLevel] }}</div>
         </v-card>
         <v-btn append-icon="mdi-logout-variant" @click="logout">登出</v-btn>
       </template>
-
-      <!-- <v-btn v-if="user.isLoggedIn" append-icon="mdi-logout-variant" @click="logout"> 登出 </v-btn> -->
     </v-container>
   </v-app-bar>
 
@@ -64,12 +61,15 @@ import { useUserStore } from '@/stores/user'
 import Swal from 'sweetalert2'
 import avatar from 'animal-avatar-generator'
 import SvgAvatar from '@/components/SvgAvatar.vue'
+import UserLevel from '@/enums/UserLevel'
 
 const router = useRouter()
 const { api } = useAxios()
 const user = useUserStore()
 const { apiAuth } = useAxios()
 
+//level
+const nowLevel = computed(() => Math.floor(user.scorescnt / 3))
 // avatar
 const svg = computed(() => avatar(user.account, { size: 40, blackout: true }))
 
@@ -116,7 +116,6 @@ const midNavs = computed(() => [
   { title: '關於作者', to: '/about', icon: 'mdi-noodles', show: true },
 ])
 
-// 兩個的取消事件應該可以寫一起 利用dialogType
 // 處理註冊成功
 const handleSuccess = async (values) => {
   if (dialogType.value === '註冊') {

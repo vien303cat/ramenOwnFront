@@ -33,7 +33,10 @@
             <v-img class="mx-auto" :src="value" height="100" width="100"></v-img>
           </template>
           <template #[`item.star`]="{ value }">
-            <span class="mx-auto">{{ value }}</span>
+            <span class="mx-auto"
+              >{{ value }}
+              <v-rating readonly length="1" size="18" model-value="1" active-color="info" />
+            </span>
           </template>
           <template #[`item.depiction`]="{ value }">
             <span class="mx-auto">{{ value }}</span>
@@ -69,20 +72,20 @@ const search = ref('')
 const headers = computed(() => {
   return [
     {
-      title: '會員',
-      align: 'center',
-      key: 'user',
-      sortable: true,
-      width: '80',
-      value: (item) => `${item.user.account} ( ${item.user.name} ) `,
-    },
-    {
       title: '麵屋名稱',
       align: 'center',
       key: 'store',
       sortable: true,
       width: '100',
       value: 'store.name',
+    },
+    {
+      title: '會員',
+      align: 'center',
+      key: 'user',
+      sortable: true,
+      width: '80',
+      value: (item) => `${item.user.account} ( ${item.user.name} ) `,
     },
     { title: '評論圖片', align: 'center', key: 'image', sortable: false, width: '150' },
     { title: '分數', align: 'center', key: 'star', sortable: true, width: '30' },

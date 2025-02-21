@@ -6,9 +6,9 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <v-col cols="12" justify="center" align="center"
-          ><v-img :src="store.image" height="300" width="300"></v-img
-        ></v-col>
+        <v-col cols="12" justify="center" align="center">
+          <v-img :src="store.image" height="300" width="300"></v-img>
+        </v-col>
         <v-col cols="12" class="text-center">
           <h1>{{ store.name }}</h1>
           <h3>評價數: {{ totalScore }} 則</h3>
@@ -67,20 +67,31 @@
                 ></v-text-field>
               </v-toolbar>
             </template>
+
             <template #[`item.image`]="{ value }">
               <v-img :src="value" height="150" width="200"></v-img>
             </template>
+
             <template #[`item.user.name`]="{ value }">
               {{ value }}
             </template>
+
             <template #[`item.star`]="{ value }">
-
-              <v-rating v-for="val of value" :key="val" readonly length="1" size="18" model-value="1" active-color="info" />
-
+              <v-rating
+                v-for="val of value"
+                :key="val"
+                readonly
+                length="1"
+                size="18"
+                model-value="1"
+                active-color="info"
+              />
             </template>
+
             <template #[`item.depiction`]="{ value }">
-              {{ value }}
+              <pre>{{ value }}</pre>
             </template>
+
             <template #[`item.updatedAt`]="{ value }">
               {{ new Date(value).toLocaleString() }}
             </template>

@@ -30,11 +30,10 @@ const navs = computed(() => {
 })
 </script>
 
-
 <route lang="yaml">
 meta:
   layout: default # 使用 src/layouts/default.vue 作為版面配置
   login: true
   admin: true
-  title: '拉麵王-管理後台'
+  title: '拉麵王|管理後台'
 </route>

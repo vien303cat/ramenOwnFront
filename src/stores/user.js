@@ -45,7 +45,7 @@ export const useUserStore = defineStore(
       id.value = ''
       scorescnt.value = ''
     }
-
+    console.log('useUserStore:')
     return {
       token,
       account,

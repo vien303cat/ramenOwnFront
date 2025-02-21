@@ -66,7 +66,6 @@ const password = useField('password')
 
 const submit = handleSubmit(async (values) => {
   // axios.post('/api/register', values)
-  console.log(values)
   try {
     const { data } = await api.post('/user/login', {
       account: values.account,

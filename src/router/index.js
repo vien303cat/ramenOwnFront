@@ -23,8 +23,8 @@ router.beforeEach(async (to, from, next) => {
   if (from === START_LOCATION && user.isLoggedIn) {
     try {
       const { data } = await apiAuth.get('/user/profile')
-      console.log('ramen-user.login')
       user.login(data.result)
+      console.log('ramen-user.login')
     } catch (error) {
       console.log(error)
       console.log('ramen-user.logout')

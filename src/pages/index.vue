@@ -10,7 +10,7 @@
           class="mt-5"
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
-          placeholder="麵屋名稱搜尋"
+          placeholder="麵屋名稱/地址搜尋"
         ></v-text-field>
       </v-col>
       <v-col v-for="store of pageStores" :key="store._id" cols="12" md="4" lg="3">
@@ -54,8 +54,10 @@ const totalPage = computed(() => {
   return Math.ceil(filteredProducts.value.length / ITEMS_PER_PAGE)
 })
 const filteredProducts = computed(() => {
-  return stores.value.filter((store) =>
-    store.name.toLowerCase().includes(search.value.toLowerCase()),
+  return stores.value.filter(
+    (store) =>
+      store.name.toLowerCase().includes(search.value.toLowerCase()) ||
+      store.adress.toLowerCase().includes(search.value.toLowerCase()),
   )
 })
 const pageStores = computed(() => {
