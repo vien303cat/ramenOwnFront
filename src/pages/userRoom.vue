@@ -3,9 +3,8 @@
     <v-row>
       <v-col cols="12" color="primary">
         <h1>幻想一下有swiper</h1>
-        {{ myUser }}
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="3">
         <v-col cols="12">
           <v-img :width="207" :height="207" src="/public/membericon2.jpg"></v-img>
           <h1 style="margin: auto">{{ myUser.name }}</h1>
@@ -37,7 +36,62 @@
         </v-col>
       </v-col>
 
-      <v-col cols="12" md="8"> </v-col>
+      <v-col cols="12" md="9">
+        <h2 class="text-center">評論一覽</h2>
+        <v-divider></v-divider>
+        <v-col col="12">
+          <!-- TODO: -->
+          <v-data-table
+            :headers="headers"
+            :items="scores"
+            :search="search"
+            :filter-keys="['store.name', 'store.adress']"
+            :items-per-page="3"
+          >
+            <template #top>
+              <v-toolbar>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search"
+                  class="mt-5"
+                  prepend-inner-icon="mdi-magnify"
+                  variant="outlined"
+                  placeholder="麵屋名稱/地址搜尋"
+                ></v-text-field>
+              </v-toolbar>
+            </template>
+
+            <template #[`item.image`]="{ value }">
+              <v-img :src="value" height="130" width="160"></v-img>
+            </template>
+
+            <template #[`item.store`]="{ item }">
+              <v-img class="mx-auto" :src="item.store.image" height="50" width="50"></v-img>
+              <p class="text-center">{{ item.store.name }}</p>
+            </template>
+
+            <template #[`item.star`]="{ value }">
+              <v-rating
+                v-for="val of value"
+                :key="val"
+                readonly
+                length="1"
+                size="18"
+                model-value="1"
+                active-color="info"
+              />
+            </template>
+
+            <template #[`item.depiction`]="{ value }">
+              <pre class="wrap-text">{{ value }}</pre>
+            </template>
+
+            <template #[`item.updatedAt`]="{ value }">
+              {{ new Date(value).toLocaleString() }}
+            </template>
+          </v-data-table>
+        </v-col>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -81,7 +135,6 @@ const getUser = async () => {
 getUser()
 
 // const scores = reactive([])
-const scores = ref([])
 const store = ref({
   _id: '',
   name: '',
@@ -94,150 +147,156 @@ const store = ref({
 
 const headers = computed(() => {
   return [
-    { title: '照片', key: 'image', sortable: false, width: '150' },
-    { title: '會員', key: 'user.name', sortable: true, width: '100' },
-    { title: '評分', key: 'star', sortable: true, width: '100' },
-    { title: '描述', key: 'depiction', sortable: false, width: '250' },
-    { title: '評論時間', key: 'updatedAt', sortable: true, width: '150' },
+    { title: '麵屋', key: 'store', sortable: true, width: '15%' },
+    { title: '麵屋地址', key: 'store.adress', sortable: true, width: '15%' },
+    { title: '照片', key: 'image', sortable: false, width: '10%' },
+    { title: '評分', key: 'star', sortable: true, width: '15%' },
+    { title: '描述', key: 'depiction', sortable: false, width: '30%' },
+    { title: '評論時間', key: 'updatedAt', sortable: true, width: '15%' },
   ]
 })
 
-const getStore = async () => {
-  try {
-    const { data } = await apiAuth.get(`/user/` + route.params.id)
-    store.value = data.result
-  } catch (error) {
-    console.error('取得店家資訊失敗:', error)
-  }
-}
-getStore()
+// const getStore = async () => {
+//   try {
+//     const { data } = await apiAuth.get(`/user/` + route.params.id)
+//     store.value = data.result
+//   } catch (error) {
+//     console.error('取得店家資訊失敗:', error)
+//   }
+// }
+// getStore()
 
-const getScores = async () => {
-  try {
-    const { data } = await apiAuth.get('/score/getstore/' + route.params.id)
-    console.log('getScores:', data.result)
-    // scores.value.push(...data.result)
-    scores.value = data.result
-  } catch (error) {
-    console.error('取得麵屋評價列表失敗:' + error)
-    createSnackbar({
-      text: error?.response?.data?.message || '取得麵屋評價列表失敗',
-      snackbarProps: {
-        color: 'red',
-        timeout: 2000,
-      },
-    })
-  }
-}
+// const getScores = async () => {
+//   try {
+//     const { data } = await apiAuth.get('/score/getstore/' + route.params.id)
+//     console.log('getScores:', data.result)
+//     // scores.value.push(...data.result)
+//     scores.value = data.result
+//   } catch (error) {
+//     console.error('取得麵屋評價列表失敗:' + error)
+//     createSnackbar({
+//       text: error?.response?.data?.message || '取得麵屋評價列表失敗',
+//       snackbarProps: {
+//         color: 'red',
+//         timeout: 2000,
+//       },
+//     })
+//   }
+// }
 // getScores()
 
-const myScore = ref({
-  _id: '',
-  user: '',
-  store: '',
-  star: '',
-  depiction: '',
-})
+const scores = ref([])
 const getScorebyUser = async () => {
   try {
-    const { data } = await apiAuth.get(`score/getuser/${route.params.id}/${user.id}`)
+    const { data } = await apiAuth.get(`score/getuserall/${user.id}`)
     // console.log(data)
-    myScore.value = data.result
-    dialog.value.id = myScore.value._id
+    scores.value = data.result
+    // dialog.value.id = myScore.value._id
   } catch (error) {
     console.error('取得個人評分失敗:', error)
   }
 }
-// getScorebyUser()
+getScorebyUser()
+
+
+
+// const myScore = ref({
+//   _id: '',
+//   user: '',
+//   store: '',
+//   star: '',
+//   depiction: '',
+// })
+
 
 // 總評論數以及平均分數
-const totalScore = computed(() => {
-  return scores.value.length
-})
+// const totalScore = computed(() => {
+//   return scores.value.length
+// })
 // reduce 會對陣列中的每個元素進行累加
-const averageScore = computed(() => {
-  return scores.value.reduce((iVal, val) => iVal + val.star, 0) / scores.value.length
-})
+// const averageScore = computed(() => {
+//   return scores.value.reduce((iVal, val) => iVal + val.star, 0) / scores.value.length
+// })
 
 const dialog = ref({
   open: false,
   id: '',
 })
-const openDailog = (item) => {
-  if (item) {
-    console.log('open', item._id)
-    dialog.value.id = item._id
-    star.value.value = item.star
-    depiction.value.value = item.depiction
-  }
-  dialog.value.open = true
-}
-const closeDialog = () => {
-  console.log('close', myScore.value._id)
-  if (!myScore.value._id) {
-    resetForm()
-    dialog.value.id = ''
-    store.value.star = ''
-  }
-  dialog.value.open = false
-  fileAgent.value.deleteFileRecord()
-}
+// const openDailog = (item) => {
+//   if (item) {
+//     console.log('open', item._id)
+//     dialog.value.id = item._id
+//     star.value.value = item.star
+//     depiction.value.value = item.depiction
+//   }
+//   dialog.value.open = true
+// }
+// const closeDialog = () => {
+//   console.log('close', myScore.value._id)
+//   if (!myScore.value._id) {
+//     resetForm()
+//     dialog.value.id = ''
+//     store.value.star = ''
+//   }
+//   dialog.value.open = false
+//   fileAgent.value.deleteFileRecord()
+// }
 
-const schema = yup.object({
-  star: yup.number().required('請填寫評價').min(1, '評價不能為空'),
-  depiction: yup.string().required('請填寫描述'),
-})
+// const schema = yup.object({
+//   star: yup.number().required('請填寫評價').min(1, '評價不能為空'),
+//   depiction: yup.string().required('請填寫描述'),
+// })
 
-const { handleSubmit, isSubmitting, resetForm } = useForm({
-  validationSchema: schema,
-})
-const star = useField('star')
-const depiction = useField('depiction')
+// const { handleSubmit, isSubmitting, resetForm } = useForm({
+//   validationSchema: schema,
+// })
+// const star = useField('star')
+// const depiction = useField('depiction')
 
-const fileAgent = ref(null)
-const fileRecords = ref([])
-const rawFileRecords = ref([])
+// const fileAgent = ref(null)
+// const fileRecords = ref([])
+// const rawFileRecords = ref([])
 
-const submit = handleSubmit(async (values) => {
-  console.log('submit', values)
-  try {
-    const formData = new FormData()
-    formData.append('user', user.id)
-    formData.append('store', store.value._id)
-    formData.append('star', values.star)
-    formData.append('depiction', values.depiction)
+// const submit = handleSubmit(async (values) => {
+//   console.log('submit', values)
+//   try {
+//     const formData = new FormData()
+//     formData.append('user', user.id)
+//     formData.append('store', store.value._id)
+//     formData.append('star', values.star)
+//     formData.append('depiction', values.depiction)
 
-    if (fileRecords.value.length > 0) {
-      formData.append('image', fileRecords.value[0].file)
-    }
-    if (dialog.value.id) {
-      await apiAuth.patch(`/score/` + myScore.value._id, formData)
-    } else {
-      await apiAuth.post('/score', formData)
-    }
+//     if (fileRecords.value.length > 0) {
+//       formData.append('image', fileRecords.value[0].file)
+//     }
+//     if (dialog.value.id) {
+//       await apiAuth.patch(`/score/` + myScore.value._id, formData)
+//     } else {
+//       await apiAuth.post('/score', formData)
+//     }
 
-    scores.value.splice(0, scores.value.length)
-    getScores()
-    getScorebyUser()
-    createSnackbar({
-      text: dialog.value.id ? '編輯成功' : '新增成功',
-      snackbarProps: {
-        color: 'green',
-        timeout: 2000,
-      },
-    })
-    closeDialog()
-  } catch (error) {
-    console.error(error)
-    createSnackbar({
-      text: '新增/編輯評價失敗 ',
-      snackbarProps: {
-        color: 'red',
-        timeout: 2000,
-      },
-    })
-  }
-})
+//     scores.value.splice(0, scores.value.length)
+//     getScores()
+//     getScorebyUser()
+//     createSnackbar({
+//       text: dialog.value.id ? '編輯成功' : '新增成功',
+//       snackbarProps: {
+//         color: 'green',
+//         timeout: 2000,
+//       },
+//     })
+//     closeDialog()
+//   } catch (error) {
+//     console.error(error)
+//     createSnackbar({
+//       text: '新增/編輯評價失敗 ',
+//       snackbarProps: {
+//         color: 'red',
+//         timeout: 2000,
+//       },
+//     })
+//   }
+// })
 </script>
 
 <style scoped>

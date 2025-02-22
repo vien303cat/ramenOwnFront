@@ -5,11 +5,12 @@
         <h1>幻想一下有swiper</h1>
       </v-col>
 
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="3">
         <v-col cols="12" justify="center" align="center">
           <v-img :src="store.image" height="300" width="300"></v-img>
         </v-col>
         <v-col cols="12" class="text-center">
+
           <h1>{{ store.name }}</h1>
           <h3>評價數: {{ totalScore }} 則</h3>
           <h3>
@@ -21,7 +22,7 @@
             <span v-else> 尚無評價 </span>
           </h3>
           <h3>{{ store.timetxt }}</h3>
-          <pre>{{ store.depiction }}</pre>
+          <h4>{{ store.depiction }}</h4>
           <h3>{{ store.adress }}</h3>
           <br />
           <v-btn
@@ -43,16 +44,15 @@
           </v-btn>
         </v-col>
       </v-col>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="9">
         <h2 class="text-center">麵友評論</h2>
-        <!-- 合併的麵友評論欄位 -->
         <v-divider></v-divider>
         <v-col col="12">
           <v-data-table
             :headers="headers"
             :items="scores"
             :search="search"
-            :filter-keys="['name']"
+            :filter-keys="['user.name']"
             :items-per-page="3"
           >
             <template #top>
@@ -89,7 +89,7 @@
             </template>
 
             <template #[`item.depiction`]="{ value }">
-              <pre>{{ value }}</pre>
+              <pre class="wrap-text">{{ value }}</pre>
             </template>
 
             <template #[`item.updatedAt`]="{ value }">
@@ -178,7 +178,6 @@ const router = useRouter()
 const route = useRoute()
 const { apiAuth } = useAxios()
 
-// const scores = reactive([])
 const scores = ref([])
 const store = ref({
   _id: '',
@@ -187,16 +186,18 @@ const store = ref({
   timetxt: '',
   image: '',
   depiction: '',
-  star: '', // 確保這裡有 star 屬性
+  star: '',
 })
+
+const search = ref('')
 
 const headers = computed(() => {
   return [
-    { title: '照片', key: 'image', sortable: false, width: '150' },
-    { title: '會員', key: 'user.name', sortable: true, width: '100' },
-    { title: '評分', key: 'star', sortable: true, width: '100' },
-    { title: '描述', key: 'depiction', sortable: false, width: '250' },
-    { title: '評論時間', key: 'updatedAt', sortable: true, width: '150' },
+    { title: '照片', key: 'image', sortable: false, width: '15%' },
+    { title: '會員', key: 'user.name', sortable: true, width: '10%' },
+    { title: '評分', key: 'star', sortable: true, width: '20%' },
+    { title: '描述', key: 'depiction', sortable: false, maxWidth: '30%' },
+    { title: '評論時間', key: 'updatedAt', sortable: true, width: '15%' },
   ]
 })
 
@@ -214,7 +215,6 @@ const getScores = async () => {
   try {
     const { data } = await apiAuth.get('/score/getstore/' + route.params.id)
     console.log('getScores:', data.result)
-    // scores.value.push(...data.result)
     scores.value = data.result
   } catch (error) {
     console.error('取得麵屋評價列表失敗:' + error)
@@ -239,7 +239,6 @@ const myScore = ref({
 const getScorebyUser = async () => {
   try {
     const { data } = await apiAuth.get(`score/getuser/${route.params.id}/${user.id}`)
-    // console.log(data)
     myScore.value = data.result
     dialog.value.id = myScore.value._id
   } catch (error) {
@@ -247,6 +246,7 @@ const getScorebyUser = async () => {
   }
 }
 getScorebyUser()
+
 
 // 總評論數以及平均分數
 const totalScore = computed(() => {
@@ -256,7 +256,6 @@ const totalScore = computed(() => {
 const averageScore = computed(() => {
   return scores.value.reduce((iVal, val) => iVal + val.star, 0) / scores.value.length
 })
-
 const dialog = ref({
   open: false,
   id: '',
@@ -283,7 +282,7 @@ const closeDialog = () => {
 
 const schema = yup.object({
   star: yup.number().required('請填寫評價').min(1, '評價不能為空'),
-  depiction: yup.string().required('請填寫描述'),
+  depiction: yup.string().required('請填寫描述').max(60, '描述最多 60 個字'),
 })
 
 const { handleSubmit, isSubmitting, resetForm } = useForm({

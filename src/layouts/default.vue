@@ -26,7 +26,7 @@
         <SvgAvatar :svg-content="svg" />
         <v-card class="pa-2 mr-3" outlined>
           <div>您好! {{ user.name }}</div>
-          <div>等級{{ nowLevel }} : {{ UserLevel.LEVEL[nowLevel] }}</div>
+          <div>等級{{ nowLevel +1}} : {{ UserLevel.LEVEL[nowLevel] }}</div>
         </v-card>
         <v-btn append-icon="mdi-logout-variant" @click="logout">登出</v-btn>
       </template>
@@ -48,7 +48,7 @@
     </v-card>
   </v-dialog>
 
-  <v-main> <RouterView></RouterView> </v-main>
+  <v-main > <RouterView></RouterView> </v-main>
 </template>
 
 <script setup>
@@ -113,7 +113,7 @@ const logout = async () => {
 const midNavs = computed(() => [
   { title: '個人專區', to: '/userRoom', icon: 'mdi-account-circle', show: user.isLoggedIn },
   { title: '管理後台', to: '/admin/stores', icon: 'mdi-account-star', show: user.isAdmin },
-  { title: '關於作者', to: '/about', icon: 'mdi-noodles', show: true },
+  // { title: '關於作者', to: '/about', icon: 'mdi-noodles', show: true },
 ])
 
 // 處理註冊成功
