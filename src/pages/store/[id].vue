@@ -1,16 +1,11 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" color="primary">
-        <h1>幻想一下有swiper</h1>
-      </v-col>
-
       <v-col cols="12" md="3">
         <v-col cols="12" justify="center" align="center">
           <v-img :src="store.image" height="300" width="300"></v-img>
         </v-col>
         <v-col cols="12" class="text-center">
-
           <h1>{{ store.name }}</h1>
           <h3>評價數: {{ totalScore }} 則</h3>
           <h3>
@@ -57,7 +52,6 @@
           >
             <template #top>
               <v-toolbar>
-                <v-spacer></v-spacer>
                 <v-text-field
                   v-model="search"
                   class="mt-5"
@@ -65,6 +59,8 @@
                   variant="outlined"
                   placeholder="會員名稱搜尋"
                 ></v-text-field>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
               </v-toolbar>
             </template>
 
@@ -72,8 +68,8 @@
               <v-img :src="value" height="150" width="200"></v-img>
             </template>
 
-            <template #[`item.user.name`]="{ value }">
-              {{ value }}
+            <template #[`item.user`]="{ value }">
+              {{ value.name }}
             </template>
 
             <template #[`item.star`]="{ value }">
@@ -193,8 +189,8 @@ const search = ref('')
 
 const headers = computed(() => {
   return [
+    { title: '會員', key: 'user', sortable: false, width: '10%' },
     { title: '照片', key: 'image', sortable: false, width: '15%' },
-    { title: '會員', key: 'user.name', sortable: true, width: '10%' },
     { title: '評分', key: 'star', sortable: true, width: '20%' },
     { title: '描述', key: 'depiction', sortable: false, maxWidth: '30%' },
     { title: '評論時間', key: 'updatedAt', sortable: true, width: '15%' },
@@ -246,7 +242,6 @@ const getScorebyUser = async () => {
   }
 }
 getScorebyUser()
-
 
 // 總評論數以及平均分數
 const totalScore = computed(() => {

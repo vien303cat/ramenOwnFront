@@ -21,6 +21,7 @@ const myCustomDarkTheme = {
     accent: '#FEC165',
     warning: '#E94444',
     grey: '#999999',
+    greyhalf: '#666666',
     info: '#FFC107',
     success: '#FFC107',
     error: '#F44336',

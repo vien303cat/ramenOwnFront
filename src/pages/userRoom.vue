@@ -1,9 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" color="primary">
-        <h1>幻想一下有swiper</h1>
-      </v-col>
+      <v-col cols="12" color="primary"> </v-col>
       <v-col cols="12" md="3">
         <v-col cols="12">
           <v-img :width="207" :height="207" src="/public/membericon2.jpg"></v-img>
@@ -30,6 +28,26 @@
             </v-menu>
           </h4>
           <h3>最新一間的評論是:</h3>
+          <v-row v-if="newScore.star" class="mt-1">
+            <v-col cols="3" class="bg-greyhalf">
+              <v-img class="mx-auto" :src="newScore.store.image" height="50" width="50"></v-img>
+              <p class="text-center">{{ newScore.store.name }}</p>
+            </v-col>
+            <v-col cols="9" class="bg-greyhalf" style="max-width: 50%">
+              <p>
+                評價:{{ newScore.star }}
+                <v-rating readonly length="1" size="20" model-value="1" active-color="info" />
+              </p>
+              <p>
+                {{ newScore.depiction }}
+              </p>
+            </v-col>
+          </v-row>
+          <v-row v-else>
+            <v-col cols="12">
+              <h3>目前沒有評論</h3>
+            </v-col>
+          </v-row>
           <h3>{{ store.timetxt }}</h3>
           <br />
           <h3>註冊時間: {{ new Date(myUser.createdAt).toLocaleString() }}</h3>
@@ -40,17 +58,15 @@
         <h2 class="text-center">評論一覽</h2>
         <v-divider></v-divider>
         <v-col col="12">
-          <!-- TODO: -->
           <v-data-table
             :headers="headers"
             :items="scores"
             :search="search"
-            :filter-keys="['store.name', 'store.adress']"
+            :filter-keys="['store.adress', 'store.name']"
             :items-per-page="3"
           >
             <template #top>
               <v-toolbar>
-                <v-spacer></v-spacer>
                 <v-text-field
                   v-model="search"
                   class="mt-5"
@@ -58,6 +74,9 @@
                   variant="outlined"
                   placeholder="麵屋名稱/地址搜尋"
                 ></v-text-field>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
               </v-toolbar>
             </template>
 
@@ -98,12 +117,10 @@
 
 <script setup>
 import { useAxios } from '@/composables/axios'
-import { reactive, computed, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSnackbar } from 'vuetify-use-dialog'
-import { useForm, useField } from 'vee-validate'
-import * as yup from 'yup'
 import UserLevel from '@/enums/UserLevel'
 
 const user = useUserStore()
@@ -117,6 +134,7 @@ const nextLevel = computed(() => 3 - (myUser.value.scorescnt % 3))
 // 使用 map() 來格式化等級名稱
 const ramenRanks = ref(UserLevel.LEVEL.map((name, index) => `等級 ${index + 1}: ${name}`))
 
+const search = ref('')
 const myUser = ref({
   account: '',
   createdAt: '',
@@ -147,43 +165,14 @@ const store = ref({
 
 const headers = computed(() => {
   return [
-    { title: '麵屋', key: 'store', sortable: true, width: '15%' },
-    { title: '麵屋地址', key: 'store.adress', sortable: true, width: '15%' },
-    { title: '照片', key: 'image', sortable: false, width: '10%' },
-    { title: '評分', key: 'star', sortable: true, width: '15%' },
-    { title: '描述', key: 'depiction', sortable: false, width: '30%' },
-    { title: '評論時間', key: 'updatedAt', sortable: true, width: '15%' },
+    { title: '麵屋', align: 'center', key: 'store', sortable: true, width: '15%' },
+    { title: '麵屋地址', align: 'center', key: 'store.adress', sortable: true, width: '15%' },
+    { title: '照片', align: 'center', key: 'image', sortable: false, width: '10%' },
+    { title: '評分', align: 'center', key: 'star', sortable: true, width: '15%' },
+    { title: '描述', align: 'center', key: 'depiction', sortable: false, width: '30%' },
+    { title: '評論時間', align: 'center', key: 'updatedAt', sortable: true, width: '15%' },
   ]
 })
-
-// const getStore = async () => {
-//   try {
-//     const { data } = await apiAuth.get(`/user/` + route.params.id)
-//     store.value = data.result
-//   } catch (error) {
-//     console.error('取得店家資訊失敗:', error)
-//   }
-// }
-// getStore()
-
-// const getScores = async () => {
-//   try {
-//     const { data } = await apiAuth.get('/score/getstore/' + route.params.id)
-//     console.log('getScores:', data.result)
-//     // scores.value.push(...data.result)
-//     scores.value = data.result
-//   } catch (error) {
-//     console.error('取得麵屋評價列表失敗:' + error)
-//     createSnackbar({
-//       text: error?.response?.data?.message || '取得麵屋評價列表失敗',
-//       snackbarProps: {
-//         color: 'red',
-//         timeout: 2000,
-//       },
-//     })
-//   }
-// }
-// getScores()
 
 const scores = ref([])
 const getScorebyUser = async () => {
@@ -198,105 +187,18 @@ const getScorebyUser = async () => {
 }
 getScorebyUser()
 
-
-
-// const myScore = ref({
-//   _id: '',
-//   user: '',
-//   store: '',
-//   star: '',
-//   depiction: '',
-// })
-
-
-// 總評論數以及平均分數
-// const totalScore = computed(() => {
-//   return scores.value.length
-// })
-// reduce 會對陣列中的每個元素進行累加
-// const averageScore = computed(() => {
-//   return scores.value.reduce((iVal, val) => iVal + val.star, 0) / scores.value.length
-// })
-
-const dialog = ref({
-  open: false,
-  id: '',
-})
-// const openDailog = (item) => {
-//   if (item) {
-//     console.log('open', item._id)
-//     dialog.value.id = item._id
-//     star.value.value = item.star
-//     depiction.value.value = item.depiction
-//   }
-//   dialog.value.open = true
-// }
-// const closeDialog = () => {
-//   console.log('close', myScore.value._id)
-//   if (!myScore.value._id) {
-//     resetForm()
-//     dialog.value.id = ''
-//     store.value.star = ''
-//   }
-//   dialog.value.open = false
-//   fileAgent.value.deleteFileRecord()
-// }
-
-// const schema = yup.object({
-//   star: yup.number().required('請填寫評價').min(1, '評價不能為空'),
-//   depiction: yup.string().required('請填寫描述'),
-// })
-
-// const { handleSubmit, isSubmitting, resetForm } = useForm({
-//   validationSchema: schema,
-// })
-// const star = useField('star')
-// const depiction = useField('depiction')
-
-// const fileAgent = ref(null)
-// const fileRecords = ref([])
-// const rawFileRecords = ref([])
-
-// const submit = handleSubmit(async (values) => {
-//   console.log('submit', values)
-//   try {
-//     const formData = new FormData()
-//     formData.append('user', user.id)
-//     formData.append('store', store.value._id)
-//     formData.append('star', values.star)
-//     formData.append('depiction', values.depiction)
-
-//     if (fileRecords.value.length > 0) {
-//       formData.append('image', fileRecords.value[0].file)
-//     }
-//     if (dialog.value.id) {
-//       await apiAuth.patch(`/score/` + myScore.value._id, formData)
-//     } else {
-//       await apiAuth.post('/score', formData)
-//     }
-
-//     scores.value.splice(0, scores.value.length)
-//     getScores()
-//     getScorebyUser()
-//     createSnackbar({
-//       text: dialog.value.id ? '編輯成功' : '新增成功',
-//       snackbarProps: {
-//         color: 'green',
-//         timeout: 2000,
-//       },
-//     })
-//     closeDialog()
-//   } catch (error) {
-//     console.error(error)
-//     createSnackbar({
-//       text: '新增/編輯評價失敗 ',
-//       snackbarProps: {
-//         color: 'red',
-//         timeout: 2000,
-//       },
-//     })
-//   }
-// })
+const newScore = ref([])
+const getScoreUserNew = async () => {
+  try {
+    const { data } = await apiAuth.get(`score/getusernew/${user.id}`)
+    console.log('getusernew', data)
+    newScore.value = data.result
+    // dialog.value.id = myScore.value._id
+  } catch (error) {
+    console.error('取得個人最新評分失敗:', error)
+  }
+}
+getScoreUserNew()
 </script>
 
 <style scoped>
