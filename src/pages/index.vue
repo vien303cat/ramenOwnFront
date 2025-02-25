@@ -1,7 +1,9 @@
 <template>
-  <v-container class="h-100">
-    <!-- <IndexOverlay /> -->
-    <!-- <PageParticles /> -->
+  <!-- <PageParticles /> -->
+
+  <IndexVideo />
+  <SmokeVideo />
+  <v-container>
     <h2 class="mx-auto">麵友照片</h2>
     <SwiperComponent
       v-if="images.length"
@@ -13,21 +15,6 @@
       :slides-per-view="7"
       :initial-slide="0"
     />
-    <!-- <v-row>
-      <v-col cols="12" class="mx-auto">
-        <h2 class="align-center">麵友照片</h2>
-        <SwiperComponent
-          v-if="images.length"
-          :slides="images"
-          :autoplay-delay="5000"
-          :navigation="true"
-          :loop="true"
-          :slides-per-view="7"
-          :initial-slide="0"
-        />
-      </v-col>
-    </v-row> -->
-
     <v-row>
       <v-col cols="12" class="d-flex align-center">
         <h1 class="me-3">拉麵麵屋列表</h1>
@@ -37,8 +24,8 @@
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
           placeholder="麵屋名稱/地址搜尋"
-        ></v-text-field
-        ><v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
+        ></v-text-field>
+        <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
       </v-col>
       <v-col v-for="store of pageStores" :key="store._id" cols="12" md="4" lg="3">
         <store-card v-bind="store"></store-card>
@@ -51,16 +38,16 @@
 </template>
 
 <script setup>
-import IndexOverlay from '@/components/IndexOverlay.vue'
+import IndexVideo from '@/components/IndexVideo.vue'
+import SmokeVideo from '@/components/SmokeVideo.vue'
 import StoreCard from '@/components/StoreCard.vue'
 import { ref, computed, watch } from 'vue'
 import { useAxios } from '@/composables/axios'
 import SwiperComponent from '@/components/SwiperComponent.vue'
-import PageParticles from '@/components/PageParticles.vue'
+// import PageParticles from '@/components/PageParticles.vue'
 
 const { apiAuth } = useAxios()
 const search = ref('')
-
 const stores = ref([])
 const getStores = async () => {
   try {
@@ -120,13 +107,15 @@ watch(totalPage, (newVal, oldVal) => {
   }
 })
 </script>
+
 <style scoped>
 /* 確保頁面內容的高度不超過視窗高度 */
 .v-container {
-  min-height: 100vh;
+  min-height: 50vh;
   overflow: hidden;
 }
 </style>
+
 <route lang="yaml">
 meta:
   layout: default # 使用 src/layouts/default.vue 作為版面配置

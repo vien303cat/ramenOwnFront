@@ -1,28 +1,29 @@
+<template>
+  <vue-particles
+    id="tsparticles"
+    class="z-10"
+    :options="options"
+    :particles-loaded="particlesLoaded"
+  />
+</template>
+
 <script setup>
 import { ref } from 'vue'
-// import { loadFull } from 'tsparticles'
-import particlesConfig from '@/config/particles-config.json'
-const particlesOptions = ref(particlesConfig)
+import particlesOptions from '@/config/particles.js'
 
-const particlesInit = async (engine) => {
-  // await loadFull(engine)
+const particlesLoaded = async (container) => {
+  console.log('Particles container loaded', container)
 }
+
+const options = ref(particlesOptions)
 </script>
-
-<template>
-  <div id="app">
-    <vue-particles
-      id="tsparticles"
-      :particles-init="particlesInit"
-      :particles-loaded="particlesLoaded"
-      url="http://foo.bar/particles.json"
-    />
-
-    <vue-particles
-      id="tsparticles"
-      :particles-init="particlesInit"
-      :particles-loaded="particlesLoaded"
-      :options="particlesOptions"
-    />
-  </div>
-</template>
+<style scoped>
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0; /* 確保粒子背景不會遮擋其他內容 */
+}
+</style>

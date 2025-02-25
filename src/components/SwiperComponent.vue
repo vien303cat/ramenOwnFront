@@ -13,7 +13,6 @@
       1024: { slidesPerView: 5, spaceBetween: 20 },
     }"
     class="custom-swiper"
-    style="height: 15%; width: 90%"
   >
     <swiper-slide v-for="(slide, index) in slides" :key="index" @click="handleClick(slide)">
       <slot :slide="slide">
@@ -83,6 +82,7 @@ const handleClick = (slide) => {
 
 <style scoped>
 .custom-swiper {
+  height: 150px; /* 設定 Swiper 的高度 */
 }
 .slide-image {
   width: 100%;

@@ -18,7 +18,18 @@
           </h3>
           <h3>{{ store.timetxt }}</h3>
           <h4>{{ store.depiction }}</h4>
-          <h3>{{ store.adress }}</h3>
+          <h3>
+            {{ store.adress }}
+            <v-btn
+              :href="`https://www.google.com/maps/search/?api=1&query=${store.name}`"
+              target="_blank"
+              color="primary"
+              variant="tonal"
+              density="comfortable"
+              icon="mdi-map-marker"
+            >
+            </v-btn>
+          </h3>
           <br />
           <v-btn
             v-if="user.isLoggedIn && dialog.id"
@@ -193,7 +204,7 @@ const headers = computed(() => {
     { title: '照片', key: 'image', sortable: false, width: '15%' },
     { title: '評分', key: 'star', sortable: true, width: '20%' },
     { title: '描述', key: 'depiction', sortable: false, maxWidth: '30%' },
-    { title: '評論時間', key: 'updatedAt', sortable: true, width: '15%' },
+    { title: '評論時間', key: 'updatedAt', sortable: true, width: '20%' },
   ]
 })
 

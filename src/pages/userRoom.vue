@@ -1,4 +1,6 @@
 <template>
+  <!-- <PageParticles /> -->
+  <SmokeVideo />
   <v-container>
     <v-row>
       <v-col cols="12" color="primary"> </v-col>
@@ -116,12 +118,14 @@
 </template>
 
 <script setup>
+import SmokeVideo from '@/components/SmokeVideo.vue'
 import { useAxios } from '@/composables/axios'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSnackbar } from 'vuetify-use-dialog'
 import UserLevel from '@/enums/UserLevel'
+// import PageParticles from '@/components/PageParticles.vue'
 
 const user = useUserStore()
 const createSnackbar = useSnackbar()

@@ -22,7 +22,6 @@
                 class="mt-5"
                 prepend-inner-icon="mdi-magnify"
                 variant="outlined"
-
                 placeholder="麵屋名稱/地址搜尋"
               ></v-text-field>
             </v-toolbar>
