@@ -2,6 +2,7 @@
   <v-app-bar>
     <v-container class="d-flex align-center">
       <!-- 左側 LOGO -->
+      <!-- TODO:首頁圖片能不能放大 -->
       <v-btn to="/" class="mr-5" :active="false">
         <v-img src="/拉麵王.png" min-width="150"></v-img>
         <!-- <v-img src="/ramen白_2276860.png" class="ma-1" min-width="40"></v-img> -->
