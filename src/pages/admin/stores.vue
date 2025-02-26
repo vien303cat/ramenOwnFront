@@ -80,18 +80,25 @@
             label="地址"
             :error-messages="adress.errorMessage.value"
           ></v-text-field>
-          <v-checkbox
-            v-model="ishidden.value.value"
-            label="上架"
-            :error-messages="ishidden.errorMessage.value"
-          ></v-checkbox>
-          <v-text-field
-            v-model="sort.value.value"
-            width="90"
-            type="number"
-            label="排序"
-            :error-messages="sort.errorMessage.value"
-          ></v-text-field>
+          <v-row>
+            <v-col cols="3">
+              <v-text-field
+                v-model="sort.value.value"
+                type="number"
+
+                min="0"
+                label="排序"
+                :error-messages="sort.errorMessage.value"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="3">
+              <v-checkbox
+                v-model="ishidden.value.value"
+                label="上架"
+                :error-messages="ishidden.errorMessage.value"
+              ></v-checkbox>
+            </v-col>
+          </v-row>
           <v-textarea
             v-model="depiction.value.value"
             label="描述"
@@ -170,15 +177,18 @@ const dialog = ref({
   // id判斷現在是新增還是編輯
   id: '',
 })
+
 const openDailog = (item) => {
   if (item) {
     dialog.value.id = item._id
     name.value.value = item.name
     timetxt.value.value = item.timetxt
     adress.value.value = item.adress
-    sort.value.value = sort.adress
+    sort.value.value = item.sort
     ishidden.value.value = !item.ishidden
     depiction.value.value = item.depiction
+  } else {
+    sort.value.value = 0
   }
   dialog.value.open = true
 }
@@ -230,7 +240,7 @@ const submit = handleSubmit(async (values) => {
     formData.append('name', values.name)
     formData.append('timetxt', values.timetxt)
     formData.append('adress', values.adress)
-    formData.append('sort', values.adress)
+    formData.append('sort', values.sort)
     formData.append('ishidden', !values.ishidden)
     formData.append('depiction', values.depiction)
 

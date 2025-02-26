@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <router-link :to="'/store/' + _id" class="no-underline">
-      <v-img :src="image" height="424" cover></v-img>
+      <v-img :src="image" aspect-ratio="1" cover></v-img>
       <v-card-title>{{ name }}</v-card-title>
       <v-card-subtitle>{{ adress }}</v-card-subtitle>
       <v-card-subtitle>{{ timetxt }}</v-card-subtitle>
