@@ -194,7 +194,7 @@ const schema = yup.object({
   depiction: yup.string().required('請輸入描述').max(60, '描述最多 60 個字'),
   timetxt: yup.string().required('請輸入營業時間'),
   adress: yup.string().required('請輸入地址'),
-  sort: yup.number().required('請輸入排序'),
+  sort: yup.number().required('請輸入排序').min(0, '排序至少為0'),
   ishidden: yup.boolean().required('請選擇是否上架'),
 })
 
