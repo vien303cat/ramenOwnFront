@@ -85,6 +85,13 @@
             label="上架"
             :error-messages="ishidden.errorMessage.value"
           ></v-checkbox>
+          <v-text-field
+            v-model="sort.value.value"
+            width="90"
+            type="number"
+            label="排序"
+            :error-messages="sort.errorMessage.value"
+          ></v-text-field>
           <v-textarea
             v-model="depiction.value.value"
             label="描述"
@@ -126,16 +133,17 @@ const stores = reactive([])
 const search = ref('')
 const headers = computed(() => {
   return [
-    { title: 'ID', key: '_id', sortable: true },
-    { title: '圖片', key: 'image', sortable: false },
-    { title: '麵屋名稱', key: 'name', sortable: true },
-    { title: '描述', key: 'depiction', sortable: false },
-    { title: '上架中', key: 'ishidden', sortable: true },
-    { title: '地址', key: 'adress', sortable: false },
+    // { title: 'ID', key: '_id', sortable: true },
+    { title: '圖片', align: 'center', key: 'image', sortable: false },
+    { title: '麵屋名稱', align: 'center', key: 'name', sortable: true },
+    { title: '描述', align: 'center', key: 'depiction', sortable: false },
+    { title: '上架中', align: 'center', key: 'ishidden', sortable: true },
+    { title: '地址', align: 'center', key: 'adress', sortable: false },
     { title: '營業時間', key: 'timetxt', sortable: false },
-    { title: '新增時間', key: 'createdAt', sortable: true },
-    { title: '更新時間', key: 'updatedAt', sortable: true },
-    { title: '編輯', key: 'edit', sortable: false },
+    { title: '新增時間', align: 'center', key: 'createdAt', sortable: true },
+    { title: '更新時間', align: 'center', key: 'updatedAt', sortable: true },
+    { title: '排序', align: 'center', key: 'sort', sortable: true },
+    { title: '編輯', align: 'center', key: 'edit', sortable: false },
   ]
 })
 
@@ -168,6 +176,7 @@ const openDailog = (item) => {
     name.value.value = item.name
     timetxt.value.value = item.timetxt
     adress.value.value = item.adress
+    sort.value.value = sort.adress
     ishidden.value.value = !item.ishidden
     depiction.value.value = item.depiction
   }
@@ -185,6 +194,7 @@ const schema = yup.object({
   depiction: yup.string().required('請輸入描述').max(60, '描述最多 60 個字'),
   timetxt: yup.string().required('請輸入營業時間'),
   adress: yup.string().required('請輸入地址'),
+  sort: yup.number().required('請輸入排序'),
   ishidden: yup.boolean().required('請選擇是否上架'),
 })
 
@@ -196,6 +206,7 @@ const name = useField('name')
 const depiction = useField('depiction')
 const timetxt = useField('timetxt')
 const adress = useField('adress')
+const sort = useField('sort')
 const ishidden = useField('ishidden')
 
 // 要清空 file agent 不能直接把 fileRecords 設為空(沒有用)因此利用 fileAgent 的方法來清空上傳的圖片(取消新增/編輯時)
@@ -219,6 +230,7 @@ const submit = handleSubmit(async (values) => {
     formData.append('name', values.name)
     formData.append('timetxt', values.timetxt)
     formData.append('adress', values.adress)
+    formData.append('sort', values.adress)
     formData.append('ishidden', !values.ishidden)
     formData.append('depiction', values.depiction)
 

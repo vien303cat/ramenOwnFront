@@ -15,7 +15,7 @@
         想要找到最好吃的拉麵嗎？那就來找吧！ 時代的變遷，人們的夢，只要人們繼續追求好吃的拉麵，
         這一切的一切都將永不停止！
       </p>
-      <img src="/public/ramen.png" alt="Logo" class="logo" />
+      <!-- <img src="/public/ramen.png" alt="Logo" class="logo" /> -->
     </div>
   </v-container>
 </template>

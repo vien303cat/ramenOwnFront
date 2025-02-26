@@ -1,10 +1,5 @@
 <template>
-  <vue-particles
-    id="tsparticles"
-    class="z-10"
-    :options="options"
-    :particles-loaded="particlesLoaded"
-  />
+  <vue-particles id="tsparticles" :options="options" :particles-loaded="particlesLoaded" />
 </template>
 
 <script setup>
@@ -25,5 +20,6 @@ const options = ref(particlesOptions)
   right: 0;
   bottom: 0;
   z-index: 0; /* 確保粒子背景不會遮擋其他內容 */
+  pointer-events: none;
 }
 </style>

@@ -2,7 +2,7 @@
   <!-- <PageParticles /> -->
 
   <IndexVideo />
-  <SmokeVideo />
+  <!-- <SmokeVideo /> -->
   <v-container>
     <h2 class="mx-auto">麵友照片</h2>
     <SwiperComponent

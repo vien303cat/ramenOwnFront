@@ -2,7 +2,7 @@ export default {
   autoPlay: true,
   background: {
     color: {
-      value: '#000000',
+      value: '#333333',
     },
     image: '',
     position: '',
@@ -25,7 +25,7 @@ export default {
   delay: 0,
   fullScreen: {
     enable: true,
-    zIndex: 0,
+    zIndex: -1,
   },
   detectRetina: true,
   duration: 0,
@@ -35,7 +35,7 @@ export default {
     events: {
       onClick: {
         enable: false,
-        mode: {},
+        mode: 'push',
       },
       onDiv: {
         selectors: {},
@@ -44,12 +44,12 @@ export default {
         type: 'circle',
       },
       onHover: {
-        enable: false,
-        mode: {},
+        enable: true,
+        mode: 'repulse',
         parallax: {
           enable: false,
           force: 2,
-          smooth: 10,
+          smooth: 5,
         },
       },
       resize: {
@@ -75,9 +75,17 @@ export default {
         distance: 200,
       },
       bubble: {
-        distance: 200,
-        duration: 0.4,
+        distance: 40,
+        duration: 2,
         mix: false,
+        opacity: 0.8,
+        size: 40,
+        divs: {
+          distance: 200,
+          duration: 0.4,
+          mix: false,
+          selectors: {},
+        },
       },
       connect: {
         distance: 80,
@@ -87,7 +95,7 @@ export default {
         radius: 60,
       },
       grab: {
-        distance: 100,
+        distance: 400,
         links: {
           blink: false,
           consent: false,
@@ -107,8 +115,17 @@ export default {
         duration: 0.4,
         factor: 100,
         speed: 1,
-        maxSpeed: 50,
+        maxSpeed: 20,
         easing: 'ease-out-quad',
+        divs: {
+          distance: 200,
+          duration: 0.4,
+          factor: 100,
+          speed: 1,
+          maxSpeed: 50,
+          easing: 'ease-out-quad',
+          selectors: {},
+        },
       },
       slow: {
         factor: 3,
@@ -152,7 +169,7 @@ export default {
     },
     collisions: {
       absorb: {
-        speed: 2,
+        speed: 1,
       },
       bounce: {
         horizontal: {
@@ -162,8 +179,8 @@ export default {
           value: 1,
         },
       },
-      enable: false,
-      maxSpeed: 50,
+      enable: true,
+      maxSpeed: 5,
       mode: 'bounce',
       overlap: {
         enable: true,
@@ -171,12 +188,12 @@ export default {
       },
     },
     color: {
-      value: '#fff',
+      value: '#E94444',
       animation: {
         h: {
           count: 0,
           enable: false,
-          speed: 20,
+          speed: 1,
           decay: 0,
           delay: 0,
           sync: true,
@@ -212,7 +229,7 @@ export default {
     move: {
       angle: {
         offset: 0,
-        value: 10,
+        value: 90,
       },
       attract: {
         distance: 200,
@@ -230,7 +247,7 @@ export default {
       },
       decay: 0,
       distance: {},
-      direction: 'right',
+      direction: 'none',
       drift: 0,
       enable: true,
       gravity: {
@@ -256,7 +273,7 @@ export default {
       },
       random: false,
       size: false,
-      speed: 5,
+      speed: 1,
       spin: {
         acceleration: 0,
         enable: false,
@@ -272,7 +289,7 @@ export default {
     },
     number: {
       density: {
-        enable: false,
+        enable: true,
         width: 1920,
         height: 1080,
       },
@@ -280,14 +297,17 @@ export default {
         mode: 'delete',
         value: 0,
       },
-      value: 200,
+      value: 50,
     },
     opacity: {
-      value: 1,
+      value: {
+        min: 0.1,
+        max: 0.5,
+      },
       animation: {
         count: 0,
-        enable: false,
-        speed: 2,
+        enable: true,
+        speed: 3,
         decay: 0,
         delay: 0,
         sync: false,
@@ -315,11 +335,14 @@ export default {
       type: 'circle',
     },
     size: {
-      value: 3,
+      value: {
+        min: 0.1,
+        max: 5,
+      },
       animation: {
         count: 0,
-        enable: false,
-        speed: 5,
+        enable: true,
+        speed: 20,
         decay: 0,
         delay: 0,
         sync: false,
@@ -332,8 +355,8 @@ export default {
       width: 0,
     },
     zIndex: {
-      value: 5,
-      opacityRate: 0.5,
+      value: 0,
+      opacityRate: 1,
       sizeRate: 1,
       velocityRate: 1,
     },
@@ -366,7 +389,7 @@ export default {
         value: 0,
       },
       mode: 'vertical',
-      speed: 25,
+      speed: 10,
     },
     tilt: {
       value: 0,
@@ -381,14 +404,20 @@ export default {
     },
     twinkle: {
       lines: {
-        enable: false,
-        frequency: 0.05,
+        enable: true,
+        frequency: 0.005,
         opacity: 1,
+        color: {
+          value: '#ff0000',
+        },
       },
       particles: {
-        enable: false,
+        enable: true,
         frequency: 0.05,
         opacity: 1,
+        color: {
+          value: '#FFC107',
+        },
       },
     },
     wobble: {
@@ -440,13 +469,13 @@ export default {
     links: {
       blink: false,
       color: {
-        value: '#fff',
+        value: '#ffffff',
       },
       consent: false,
-      distance: 100,
-      enable: false,
+      distance: 150,
+      enable: true,
       frequency: 1,
-      opacity: 1,
+      opacity: 0.4,
       shadow: {
         blur: 5,
         color: {
@@ -477,74 +506,8 @@ export default {
   style: {},
   themes: [],
   zLayers: 100,
-  key: 'amongUs',
-  name: 'Among Us',
-  emitters: {
-    autoPlay: true,
-    fill: true,
-    life: {
-      wait: false,
-    },
-    rate: {
-      quantity: 1,
-      delay: 7,
-    },
-    shape: {
-      options: {},
-      replace: {
-        color: false,
-        opacity: false,
-      },
-      type: 'square',
-    },
-    startCount: 0,
-    size: {
-      mode: 'percent',
-      height: 0,
-      width: 0,
-    },
-    particles: {
-      shape: {
-        type: 'images',
-        options: {
-          images: {
-            src: 'https://particles.js.org/images/cyan_amongus.png',
-            width: 500,
-            height: 634,
-          },
-        },
-      },
-      size: {
-        value: 40,
-      },
-      move: {
-        speed: 10,
-        outModes: {
-          default: 'none',
-          right: 'destroy',
-        },
-        straight: true,
-      },
-      zIndex: {
-        value: 0,
-      },
-      rotate: {
-        value: {
-          min: 0,
-          max: 360,
-        },
-        animation: {
-          enable: true,
-          speed: 10,
-          sync: true,
-        },
-      },
-    },
-    position: {
-      x: -5,
-      y: 55,
-    },
-  },
+  key: 'twinkle',
+  name: 'Twinkle',
   motion: {
     disable: false,
     reduce: {

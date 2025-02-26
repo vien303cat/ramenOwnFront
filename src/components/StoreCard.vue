@@ -1,8 +1,7 @@
 <template>
-  <!-- TODO: 看要不要串GSAP hover動畫 -->
   <v-card>
     <router-link :to="'/store/' + _id" class="no-underline">
-      <v-img :src="image" height="300" cover></v-img>
+      <v-img :src="image" height="424" cover></v-img>
       <v-card-title>{{ name }}</v-card-title>
       <v-card-subtitle>{{ adress }}</v-card-subtitle>
       <v-card-subtitle>{{ timetxt }}</v-card-subtitle>
@@ -61,5 +60,12 @@ defineProps({
 .no-underline {
   text-decoration: none;
   color: white;
+}
+.v-card {
+  transition: transform 0.3s ease-in-out;
+}
+.v-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }
 </style>

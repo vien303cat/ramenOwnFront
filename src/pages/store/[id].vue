@@ -79,8 +79,12 @@
               <v-img :src="value" height="150" width="200"></v-img>
             </template>
 
-            <template #[`item.user`]="{ value }">
-              {{ value.name }}
+            <template #[`item.user`]="value">
+              <h2 style="text-align: center">{{ value.item.user.name }}</h2>
+              <p style="text-align: center; color: seashell">
+                等級: {{ Math.floor(value.item.userScoreCount / 3) + 1 }}
+                {{ UserLevel.LEVEL[Math.floor(value.item.userScoreCount / 3)] }}
+              </p>
             </template>
 
             <template #[`item.star`]="{ value }">
@@ -172,16 +176,16 @@
 
 <script setup>
 import { useAxios } from '@/composables/axios'
-import { reactive, computed, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useForm, useField } from 'vee-validate'
+import UserLevel from '@/enums/UserLevel'
 import * as yup from 'yup'
 
 const user = useUserStore()
 const createSnackbar = useSnackbar()
-const router = useRouter()
 const route = useRoute()
 const { apiAuth } = useAxios()
 
@@ -200,7 +204,7 @@ const search = ref('')
 
 const headers = computed(() => {
   return [
-    { title: '會員', key: 'user', sortable: false, width: '10%' },
+    { title: '會員', key: 'user', sortable: false, width: '15%' },
     { title: '照片', key: 'image', sortable: false, width: '15%' },
     { title: '評分', key: 'star', sortable: true, width: '20%' },
     { title: '描述', key: 'depiction', sortable: false, maxWidth: '30%' },

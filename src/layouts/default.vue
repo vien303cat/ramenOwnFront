@@ -1,10 +1,10 @@
 <template>
+  <PageParticles />
   <v-app-bar>
     <v-container class="d-flex align-center">
       <!-- 左側 LOGO -->
-      <!-- TODO:首頁圖片能不能放大 -->
-      <v-btn to="/" class="mr-5" :active="false">
-        <v-img src="/拉麵王.png" min-width="150"></v-img>
+      <v-btn to="/" class="mr-5" :active="false" size="x-large">
+        <img src="/拉麵王.png" style="height: calc(var(--v-btn-height) + 0px)" />
         <!-- <v-img src="/ramen白_2276860.png" class="ma-1" min-width="40"></v-img> -->
         <!-- <span class="text-orange font-weight-bold text-h4">拉麵王</span> -->
       </v-btn>
@@ -48,7 +48,6 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-
   <v-main> <RouterView></RouterView> </v-main>
 </template>
 
