@@ -150,7 +150,7 @@ body {
 }
 
 .logo-btn .logo-img {
-  transition: 0.3s ease-in-out;
+  /* transition: 0.3s ease-in-out; */
 }
 
 .logo-btn:hover .logo-img {
@@ -158,7 +158,7 @@ body {
 }
 
 .logo-btn:hover {
-  content: url('/logo2.png');
+  /* content: url('/logo2.png'); */
 }
 </style>
 
