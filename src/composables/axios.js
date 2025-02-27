@@ -9,13 +9,13 @@ import { useUserStore } from '@/stores/user'
 // axios.post('/user')
 // axios.post('/user/login')
 
-// axios.defaults.baseURL = import.meta.env.VITE_API_URL
+// axios.defaults.baseURL = import.meta.env.VITE_API
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API,
 })
 
 const apiAuth = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API,
 })
 
 // axios 攔截器

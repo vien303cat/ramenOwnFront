@@ -23,7 +23,7 @@ jobs:
           npm run build
         # 環境變數(使用 GitHub Secrets來藏.env)
         env:
-          VITE_API: ${{ secrets.VITE_API_URL }}
+          VITE_API: ${{ secrets.VITE_API }}
       # 步驟三：部署
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
