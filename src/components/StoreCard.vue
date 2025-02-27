@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="store-card">
     <router-link :to="'/store/' + _id" class="no-underline">
       <v-img :src="image" aspect-ratio="1" cover></v-img>
       <v-card-title>{{ name }}</v-card-title>
@@ -61,10 +61,10 @@ defineProps({
   text-decoration: none;
   color: white;
 }
-.v-card {
+.store-card {
   transition: transform 0.3s ease-in-out;
 }
-.v-card:hover {
+.store-card:hover {
   transform: scale(1.05);
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }

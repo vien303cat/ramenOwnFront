@@ -1,10 +1,11 @@
 <template>
   <PageParticles />
   <v-app-bar>
+    <!-- <SmokeVideo /> -->
     <v-container class="d-flex align-center">
       <!-- 左側 LOGO -->
-      <v-btn to="/" class="mr-5" :active="false" size="x-large">
-        <img src="/拉麵王.png" style="height: calc(var(--v-btn-height) + 0px)" />
+      <v-btn to="/" class="mr-5 logo-btn" :active="false" size="x-large">
+        <img class="logo-img" src="/logo1.png" style="height: calc(var(--v-btn-height) + 0px)" />
         <!-- <v-img src="/ramen白_2276860.png" class="ma-1" min-width="40"></v-img> -->
         <!-- <span class="text-orange font-weight-bold text-h4">拉麵王</span> -->
       </v-btn>
@@ -52,6 +53,7 @@
 </template>
 
 <script setup>
+import SmokeVideo from '@/components/SmokeVideo.vue'
 import { ref, computed } from 'vue'
 import LoginForm from '@/components/LoginForm.vue'
 import RegisterForm from '@/components/RegisterForm.vue'
@@ -145,6 +147,18 @@ const handleSuccess = async (values) => {
 html,
 body {
   overflow-x: hidden;
+}
+
+.logo-btn .logo-img {
+  transition: 0.3s ease-in-out;
+}
+
+.logo-btn:hover .logo-img {
+  /* opacity: 0; */
+}
+
+.logo-btn:hover {
+  content: url('/logo2.png');
 }
 </style>
 
