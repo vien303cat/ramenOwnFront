@@ -122,6 +122,11 @@ const del = async (id) => {
     confirmButtonColor: '#E94444',
     cancelButtonText: '取消',
     cancelButtonColor: '#999999',
+
+  customClass: {
+    confirmButton: 'mybtn-text' ,
+    cancelButton: 'mybtn-text'
+  }
   })
   console.log('result:', result)
   if (result.isConfirmed) {
@@ -157,3 +162,9 @@ const del = async (id) => {
   }
 }
 </script>
+
+<style>
+  .mybtn-text {
+    color: white;
+  }
+</style>
