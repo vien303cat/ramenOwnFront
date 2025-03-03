@@ -1,79 +1,51 @@
-# Vuetify (Default)
+# 拉麵王 🍜
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+## 專案簡介
 
-## ❗️ Important Links
+**拉麵王** 是一個會員系統，讓使用者記錄自己吃過的拉麵店，避免重複造訪，並分享評論與心得。
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+### 主題發想
 
-## 💿 Install
+常常跟朋友出去吃美食，其中拉麵店是最常去的。台灣有超過一千間拉麵店，想要吃遍各種拉麵但有時候會忘記自己吃過哪家。因此，這個專案誕生了，提供一個方便的工具來記錄拉麵足跡。
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+---
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
+## 技術架構 🛠️
 
-After completing the installation, your environment is ready for Vuetify development.
+**本專案使用了以下技術與套件：**
 
-## ✨ Features
+- **前端技術：** Vue 3, Vuetify, Vue Router, Pinia, VITE, tsparticles, swiper, sweetalert2
+- **後端技術：** Node.js, Express, mongoose, passport, bcrypt, jsonwebtoken, validator, axios, cloudinary
+- **專案結構：** 前後端分離（本 README 針對前端）
 
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
+---
 
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
+## 功能與特色 ✨
 
-## 💡 Usage
+- **會員系統**：使用者可以註冊、登入、查看個人紀錄。
+- **等級系統**：根據用戶的拉麵評論累積等級。
+- **拉麵評論**：使用者可留下對拉麵店的評價與心得。
+- **管理後台**：管理店家內容以及使用者的評論。
 
-This section covers how to start the development server and build your project for production.
+---
 
-### Starting the Development Server
+## 截圖展示 📸
 
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
+![首頁畫面](public/screenshots/index.PNG)
+![會員等級](public/screenshots/userroom.PNG)
 
-```bash
-yarn dev
-```
+---
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+## 授權 📜
 
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
+本專案採用 **Beerware 授權**
 
-### Building for Production
+---
 
-To build your project for production, use:
+## 聯絡方式 📩
 
-```bash
-yarn build
-```
+如果有任何問題，請透過 Email 或其他方式聯絡開發者。
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+---
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
-
-## 💪 Support Vuetify Development
-
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
-
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
-
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
-
-Copyright (c) 2016-present Vuetify, LLC
+🎉 **感謝使用拉麵王，快來記錄你的拉麵之旅吧！** 🍜🔥
