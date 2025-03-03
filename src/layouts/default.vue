@@ -6,8 +6,6 @@
       <!-- 左側 LOGO -->
       <v-btn to="/" class="mr-5 logo-btn" :active="false" size="x-large">
         <img class="logo-img" src="/logo1.png" style="height: calc(var(--v-btn-height) + 0px)" />
-        <!-- <v-img src="/ramen白_2276860.png" class="ma-1" min-width="40"></v-img> -->
-        <!-- <span class="text-orange font-weight-bold text-h4">拉麵王</span> -->
       </v-btn>
 
       <!-- 中間靠左操作選單 -->
@@ -25,10 +23,12 @@
 
       <!-- 右側操作選單 (顯示用戶名稱和登出按鈕) -->
       <template v-if="user.isLoggedIn">
-        <SvgAvatar :svg-content="svg" />
+        <SvgAvatar :svg-content="svg" :inputcls="icon" />
         <v-card class="pa-2 mr-3" outlined>
           <div>您好! {{ user.name }}</div>
-          <div>等級{{ nowLevel + 1 }} : {{ UserLevel.LEVEL[nowLevel] }}</div>
+          <div>
+            等級{{ nowLevel + 1 }} : {{ UserLevel.LEVEL[nowLevel] }} {{ UserLevel.ICON[nowLevel] }}
+          </div>
         </v-card>
         <v-btn append-icon="mdi-logout-variant" @click="logout">登出</v-btn>
       </template>

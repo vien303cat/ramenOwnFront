@@ -7,12 +7,15 @@
       <v-col cols="12" md="3">
         <v-col cols="12">
           <v-img :width="207" :height="207" src="/public/membericon2.jpg"></v-img>
+          <!-- <SvgAvatar :svg-content="svg" :inputcls="room" /> -->
           <h1 style="margin: auto">{{ myUser.name }}</h1>
         </v-col>
         <v-col cols="12">
           <h2>帳號:{{ myUser.account }}</h2>
           <h2>已評論店家數: {{ myUser.scorescnt }} 家</h2>
-          <h2 class="text-success">等級 {{ nowLevel + 1 }} : {{ UserLevel.LEVEL[nowLevel] }}</h2>
+          <h2 class="text-success">
+            等級 {{ nowLevel + 1 }} : {{ UserLevel.LEVEL[nowLevel] }} {{ UserLevel.ICON[nowLevel] }}
+          </h2>
           <h4 class="text-grey">
             距離下一個等級還差 {{ nextLevel }} 則評論
             <v-menu offset-y>
@@ -82,13 +85,15 @@
               </v-toolbar>
             </template>
 
-            <template #[`item.image`]="{ value }">
-              <v-img :src="value" height="130" width="160"></v-img>
+            <template #[`item.store`]="{ item }">
+              <router-link :to="`/store/${item.store._id}`">
+                <v-img class="mx-auto" :src="item.store.image" height="50" width="50"> </v-img>
+              </router-link>
+              <p class="text-center">{{ item.store.name }}</p>
             </template>
 
-            <template #[`item.store`]="{ item }">
-              <v-img class="mx-auto" :src="item.store.image" height="50" width="50"></v-img>
-              <p class="text-center">{{ item.store.name }}</p>
+            <template #[`item.image`]="{ value }">
+              <v-img :src="value" height="130" width="160"></v-img>
             </template>
 
             <template #[`item.star`]="{ value }">
@@ -121,16 +126,16 @@
 import SmokeVideo from '@/components/SmokeVideo.vue'
 import { useAxios } from '@/composables/axios'
 import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { useSnackbar } from 'vuetify-use-dialog'
 import UserLevel from '@/enums/UserLevel'
 // import PageParticles from '@/components/PageParticles.vue'
+import avatar from 'animal-avatar-generator'
+import SvgAvatar from '@/components/SvgAvatar.vue'
 
 const user = useUserStore()
-const createSnackbar = useSnackbar()
-const route = useRoute()
 const { apiAuth } = useAxios()
+// avatar
+const svg = computed(() => avatar(user.account, { size: 40, blackout: true }))
 
 //level
 const nowLevel = computed(() => Math.floor(myUser.value.scorescnt / 3))

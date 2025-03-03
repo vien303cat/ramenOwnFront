@@ -84,6 +84,7 @@
               <p style="text-align: center; color: seashell">
                 等級: {{ Math.floor(value.item.userScoreCount / 3) + 1 }}
                 {{ UserLevel.LEVEL[Math.floor(value.item.userScoreCount / 3)] }}
+                {{ UserLevel.ICON[Math.floor(value.item.userScoreCount / 3)] }}
               </p>
             </template>
 
