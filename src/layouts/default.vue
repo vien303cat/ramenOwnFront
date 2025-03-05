@@ -27,6 +27,7 @@
         <v-card class="pa-2 mr-3" outlined>
           <div>您好! {{ user.name }}</div>
           <div>
+            <!-- <v-text v-model="UserLevel">{{ nowLevel }}</v-text> -->
             等級{{ nowLevel + 1 }} : {{ UserLevel.LEVEL[nowLevel] }} {{ UserLevel.ICON[nowLevel] }}
           </div>
         </v-card>
@@ -147,18 +148,6 @@ const handleSuccess = async (values) => {
 html,
 body {
   overflow-x: hidden;
-}
-
-.logo-btn .logo-img {
-  /* transition: 0.3s ease-in-out; */
-}
-
-.logo-btn:hover .logo-img {
-  /* opacity: 0; */
-}
-
-.logo-btn:hover {
-  /* content: url('/logo2.png'); */
 }
 </style>
 

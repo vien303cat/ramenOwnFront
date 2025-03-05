@@ -14,6 +14,10 @@ import { useUserStore } from '@/stores/user'
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes),
+  // 跳轉之後回頂部
+  // scrollBehavior(to, from, savedPosition) {
+  //   return { top: 0 }
+  // },
 })
 
 router.beforeEach(async (to, from, next) => {
