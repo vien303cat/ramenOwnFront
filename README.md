@@ -16,7 +16,7 @@
 
 - **前端技術：** Vue 3, Vuetify, Vue Router, Pinia, VITE, tsparticles, swiper, sweetalert2
 - **後端技術：** Node.js, Express, mongoose, passport, bcrypt, jsonwebtoken, validator, axios, cloudinary
-- **專案結構：** 前後端分離（本 README 針對前端）
+- **專案結構：** 前後端分離
 
 ---
 
